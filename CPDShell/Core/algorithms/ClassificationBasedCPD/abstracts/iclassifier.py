@@ -9,18 +9,17 @@ class Classifier(ABC):
 
     @abstractmethod
     def classify(self, window: Iterable[float | numpy.float64]) -> None:
-        """Function for finding change points in window
+        """Applies classificator to the given sample.
 
         :param window: part of global data for finding change points
-        :return: the number of change points in the window
         """
         raise NotImplementedError
 
     @abstractmethod
     def quantify_in_point(self, time: int) -> float:
-        """Function for finding coordinates of change points in window
+        """Evaluates quality function based on classificator in the specified point.
 
-        :param window: part of global data for finding change points
-        :return: list of window change points
+        :param window: Index of point in the given sample to calculate quality.
+        :return: Quality assessment.
         """
         raise NotImplementedError

@@ -6,15 +6,6 @@ __author__ = "Artemii Patov"
 __copyright__ = "Copyright (c) 2024 Artemii Patov"
 __license__ = "SPDX-License-Identifier: MIT"
 
-import typing as tp
-from collections import deque
-from collections.abc import Iterable
-from math import sqrt
-
-import numpy as np
-
-import CPDShell.Core.algorithms.KNNCPD.knn_graph as knngraph
-from CPDShell.Core.algorithms.abstract_algorithm import Algorithm
 from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.istatistic_test import StatisticTest
 
 
@@ -24,18 +15,17 @@ class ThresholdOvercome(StatisticTest):
         threshold: float
     ) -> None:
         """
-        Initializes a new instance of KNN change point algorithm.
+        Initializes a new instance of threshold overcome criterion.
 
-        :param metric: function for calculating distance between points in time series.
-        :param k: number of neighbours in graph relative to each point.
+        :param threshold: Threshold to overcome to detect the change point.
         """
         self.__threshold = threshold
 
     def get_change_points(self, classifier_assesments: list[float]) -> list[int]:
-        """Function for finding change points in window
+        """Separates change points from other points in sample based on some criterion.
 
-        :param window: part of global data for finding change points
-        :return: the number of change points in the window
+        :param classifier_assesments: List of quality assessments evaluated in each point of the sample.
+        :return: Change points in the current window.
         """
         return [i for i, v in enumerate(classifier_assesments) if v > self.__threshold]
         # return list(filter(lambda x : x > self.__threshold, classifier_assesments))

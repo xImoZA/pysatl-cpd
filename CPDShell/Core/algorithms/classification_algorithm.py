@@ -1,5 +1,5 @@
 """
-Module for implementation of CPD algorithm based on nearest neighbours.
+Module for implementation of CPD algorithm based on classification.
 """
 
 __author__ = "Artemii Patov"
@@ -17,25 +17,26 @@ from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.istatistic_test i
 
 class ClassificationAlgorithm(Algorithm):
     """
-    The class implementing change point detection algorithm based on nearest neighbours.
+    The class implementing change point detection algorithm based on classification.
     """
 
     def __init__(
         self,
         classifier: Classifier,
         test_statistic: StatisticTest,
-        offset_coeff: float
+        shift_coeff: float
     ) -> None:
         """
-        Initializes a new instance of KNN change point algorithm.
+        Initializes a new instance of classification based change point detection algorithm.
 
-        :param metric: function for calculating distance between points in time series.
-        :param k: number of neighbours in graph relative to each point.
-        :param threshold: threshold that statistics should overcome to fix change point.
+        :param classifier: Classifier for sample classification.
+        :param test_statistic: Criterion to separate change points from other points in sample.
+        :param shift_coeff: Coefficient for evaluating indent from window borders.
+        The shift is calculated by multiplying the given coefficient by the size of window.
         """
         self.__classifiser = classifier
         self.__test_statistic = test_statistic
-        self.__offset_coeff = offset_coeff
+        self.__shift_coeff = shift_coeff
 
         self.__change_points: list[int] = []
         self.__change_points_count = 0
@@ -73,8 +74,8 @@ class ClassificationAlgorithm(Algorithm):
 
         # Examining each point.
         # Boundaries are always change points.
-        first_point = int(sample_size * self.__offset_coeff)
-        last_point = int(sample_size * (1 - self.__offset_coeff))
+        first_point = int(sample_size * self.__shift_coeff)
+        last_point = int(sample_size * (1 - self.__shift_coeff))
         assessments = []
 
         for time in range(first_point, last_point):
