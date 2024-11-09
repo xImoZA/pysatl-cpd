@@ -16,7 +16,7 @@ class Classifier(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def quantify_in_point(self, time: int) -> float:
+    def assess_in_point(self, time: int) -> float:
         """Evaluates quality function based on classificator in the specified point.
 
         :param window: Index of point in the given sample to calculate quality.

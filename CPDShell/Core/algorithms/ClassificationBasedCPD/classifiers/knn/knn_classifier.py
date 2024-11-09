@@ -1,5 +1,5 @@
 """
-Module for implementation of CPD algorithm based on nearest neighbours.
+Module for implementation of classifier based on nearest neighbours for cpd.
 """
 
 __author__ = "Artemii Patov"
@@ -7,7 +7,6 @@ __copyright__ = "Copyright (c) 2024 Artemii Patov"
 __license__ = "SPDX-License-Identifier: MIT"
 
 import typing as tp
-from collections import deque
 from collections.abc import Iterable
 from math import sqrt
 
@@ -47,7 +46,7 @@ class KNNAlgorithm(Classifier):
         self.__knn_graph.build()
         self.__window_size = len(list(window))
 
-    def quantify_in_point(self, time: int) -> float:
+    def assess_in_point(self, time: int) -> float:
         """
         Calaulates quality function in specified point.
 
