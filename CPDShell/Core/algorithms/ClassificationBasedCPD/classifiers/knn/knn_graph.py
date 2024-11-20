@@ -34,6 +34,7 @@ class KNNGraph:
         :param window: an overall sample the graph is based on.
         :param metric: function for calculating distance between points in time series.
         :param k: number of neighbours in graph relative to each point.
+        :param delta: delta for comparing floats.
         """
         self.__window: list[Observation] = [Observation(t, v) for t, v in enumerate(window)]
         self.__metric: tp.Callable[[Observation, Observation], float] = lambda obs1, obs2: metric(

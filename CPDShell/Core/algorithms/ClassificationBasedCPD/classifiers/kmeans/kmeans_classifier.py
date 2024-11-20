@@ -6,9 +6,7 @@ __author__ = "Artemii Patov"
 __copyright__ = "Copyright (c) 2024 Artemii Patov"
 __license__ = "SPDX-License-Identifier: MIT"
 
-import typing as tp
 from collections.abc import Iterable
-from math import sqrt
 
 import numpy as np
 from sklearn.cluster import KMeans
@@ -31,6 +29,10 @@ class KMeansAlgorithm(Classifier):
         self.__window: list[float | np.float64] | None = None
 
     def classify(self, window: Iterable[float | np.float64]) -> None:
+        """Applies classificator to the given sample.
+
+        :param window: part of global data for finding change points
+        """
         self.__window = list(window)
         k_means = KMeans(n_clusters=2)
         window_reshaped = np.array(self.__window).reshape(-1, 1)

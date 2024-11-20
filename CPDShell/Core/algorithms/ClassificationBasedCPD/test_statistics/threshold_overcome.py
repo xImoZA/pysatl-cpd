@@ -10,10 +10,11 @@ from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.istatistic_test i
 
 
 class ThresholdOvercome(StatisticTest):
-    def __init__(
-        self,
-        threshold: float
-    ) -> None:
+    """
+    The class implementing test statistic based on threshold overcome.
+    """
+
+    def __init__(self, threshold: float) -> None:
         """
         Initializes a new instance of threshold overcome criterion.
 

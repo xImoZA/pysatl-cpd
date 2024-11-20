@@ -20,23 +20,18 @@ class ClassificationAlgorithm(Algorithm):
     The class implementing change point detection algorithm based on classification.
     """
 
-    def __init__(
-        self,
-        classifier: Classifier,
-        test_statistic: StatisticTest,
-        shift_coeff: float
-    ) -> None:
+    def __init__(self, classifier: Classifier, test_statistic: StatisticTest, indent_coeff: float) -> None:
         """
         Initializes a new instance of classification based change point detection algorithm.
 
         :param classifier: Classifier for sample classification.
         :param test_statistic: Criterion to separate change points from other points in sample.
-        :param shift_coeff: Coefficient for evaluating indent from window borders.
-        The shift is calculated by multiplying the given coefficient by the size of window.
+        :param indent_coeff: Coefficient for evaluating indent from window borders.
+        The indentation is calculated by multiplying the given coefficient by the size of window.
         """
         self.__classifiser = classifier
         self.__test_statistic = test_statistic
-        self.__shift_coeff = shift_coeff
+        self.__shift_coeff = indent_coeff
 
         self.__change_points: list[int] = []
         self.__change_points_count = 0

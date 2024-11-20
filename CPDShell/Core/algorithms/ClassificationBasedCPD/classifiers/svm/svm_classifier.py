@@ -6,9 +6,7 @@ __author__ = "Artemii Patov"
 __copyright__ = "Copyright (c) 2024 Artemii Patov"
 __license__ = "SPDX-License-Identifier: MIT"
 
-import typing as tp
 from collections.abc import Iterable
-from math import sqrt
 
 import numpy as np
 from sklearn.svm import SVC
@@ -31,6 +29,10 @@ class SVMAlgorithm(Classifier):
         self.__window: list[float | np.float64] = None
 
     def classify(self, window: Iterable[float | np.float64]) -> None:
+        """Applies classificator to the given sample.
+
+        :param window: part of global data for finding change points.
+        """
         self.__window = list(window)
 
     def assess_barrier(self, time: int) -> float:
@@ -48,5 +50,5 @@ class SVMAlgorithm(Classifier):
         prediction = self.__model.predict(test_sample)
         right = prediction.sum()
         left = len(prediction) - right
-        
+
         return 2 * min(right, left) / len(prediction)

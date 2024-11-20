@@ -12,8 +12,8 @@ from math import sqrt
 
 import numpy as np
 
-from CPDShell.Core.algorithms.ClassificationBasedCPD.classifiers.knn.knn_graph import KNNGraph
 from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.iclassifier import Classifier
+from CPDShell.Core.algorithms.ClassificationBasedCPD.classifiers.knn.knn_graph import KNNGraph
 
 
 class KNNAlgorithm(Classifier):
@@ -32,6 +32,7 @@ class KNNAlgorithm(Classifier):
 
         :param metric: function for calculating distance between points in time series.
         :param k: number of neighbours in graph relative to each point.
+        :param delta: delta for comparing floats.
         """
         self.__k = k
         self.__metric = metric
@@ -41,6 +42,10 @@ class KNNAlgorithm(Classifier):
         self.__knn_graph: KNNGraph | None = None
 
     def classify(self, window: Iterable[float | np.float64]) -> None:
+        """Applies classificator to the given sample.
+
+        :param window: part of global data for finding change points.
+        """
         self.__window = list(window)
         self.__knn_graph = KNNGraph(window, self.__metric, self.__k, self.__delta)
         self.__knn_graph.build()
@@ -68,25 +73,28 @@ class KNNAlgorithm(Classifier):
 
         h = 4 * (n_1 - 1) * (n_2 - 1) / ((n - 2) * (n - 3))
 
-        sum_1 = (1 / n) * (2 * sum(
-            self.__knn_graph.check_for_neighbourhood(i, j) * self.__knn_graph.check_for_neighbourhood(j, i)
-            for i in range(window_size)
-            for j in range(i + 1, window_size)
-        ) + sum(
-            self.__knn_graph.check_for_neighbourhood(i, i)
-            for i in range(window_size)
-        ))
+        sum_1 = (1 / n) * (
+            2
+            * sum(
+                self.__knn_graph.check_for_neighbourhood(i, j) * self.__knn_graph.check_for_neighbourhood(j, i)
+                for i in range(window_size)
+                for j in range(i + 1, window_size)
+            )
+            + sum(self.__knn_graph.check_for_neighbourhood(i, i) for i in range(window_size))
+        )
 
-        sum_2 = (1 / n) * (2 * sum(
-            self.__knn_graph.check_for_neighbourhood(j, i) * self.__knn_graph.check_for_neighbourhood(m, i)
-            for i in range(window_size)
-            for j in range(window_size)
-            for m in range(j + 1, window_size)
-        ) + sum(
-            self.__knn_graph.check_for_neighbourhood(j, i)
-            for i in range(window_size)
-            for j in range(window_size)
-        ))
+        sum_2 = (1 / n) * (
+            2
+            * sum(
+                self.__knn_graph.check_for_neighbourhood(j, i) * self.__knn_graph.check_for_neighbourhood(m, i)
+                for i in range(window_size)
+                for j in range(window_size)
+                for m in range(j + 1, window_size)
+            )
+            + sum(
+                self.__knn_graph.check_for_neighbourhood(j, i) for i in range(window_size) for j in range(window_size)
+            )
+        )
 
         expectation = 4 * k * n_1 * n_2 / (n - 1)
         variance = (expectation / k) * (h * (sum_1 + k - (2 * k**2 / (n - 1))) + (1 - h) * (sum_2 - k**2))
