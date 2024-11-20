@@ -12,7 +12,7 @@ import numpy as np
 
 from CPDShell.Core.algorithms.abstract_algorithm import Algorithm
 from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.iclassifier import Classifier
-from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.istatistic_test import StatisticTest
+from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.istatistic_test import TestStatistic
 
 
 class ClassificationAlgorithm(Algorithm):
@@ -20,7 +20,7 @@ class ClassificationAlgorithm(Algorithm):
     The class implementing change point detection algorithm based on classification.
     """
 
-    def __init__(self, classifier: Classifier, test_statistic: StatisticTest, indent_coeff: float) -> None:
+    def __init__(self, classifier: Classifier, test_statistic: TestStatistic, indent_coeff: float) -> None:
         """
         Initializes a new instance of classification based change point detection algorithm.
 
