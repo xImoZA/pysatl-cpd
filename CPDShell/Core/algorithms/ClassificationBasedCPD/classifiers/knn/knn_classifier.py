@@ -79,15 +79,16 @@ class KNNAlgorithm(Classifier):
             for j in self.__knn_graph.get_neighbours(i)
         )
 
-        sum_2 = (1 / n) * (2 * sum(
-            self.__knn_graph.check_for_neighbourhood(m, i)
-            for j in range(window_size)
-            for i in self.__knn_graph.get_neighbours(j)
-            for m in range(j + 1, window_size)
-        ) + sum(
-            len(self.__knn_graph.get_neighbours(i))
-            for i in range(window_size)
-        ))
+        sum_2 = (1 / n) * (
+            2
+            * sum(
+                self.__knn_graph.check_for_neighbourhood(m, i)
+                for j in range(window_size)
+                for i in self.__knn_graph.get_neighbours(j)
+                for m in range(j + 1, window_size)
+            )
+            + sum(len(self.__knn_graph.get_neighbours(i)) for i in range(window_size))
+        )
 
         expectation = 4 * k * n_1 * n_2 / (n - 1)
         variance = (expectation / k) * (h * (sum_1 + k - (2 * k**2 / (n - 1))) + (1 - h) * (sum_2 - k**2))
