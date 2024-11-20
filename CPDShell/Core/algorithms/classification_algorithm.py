@@ -70,7 +70,7 @@ class ClassificationAlgorithm(Algorithm):
         if sample_size == 0:
             return
 
-        self.__classifiser.window = window
+        self.__classifiser.classify(window)
 
         # Examining each point.
         # Boundaries are always change points.
@@ -79,7 +79,7 @@ class ClassificationAlgorithm(Algorithm):
         assessments = []
 
         for time in range(first_point, last_point):
-            quality = self.__classifiser.classify_barrier(time)
+            quality = self.__classifiser.assess_barrier(time)
             assessments.append(quality)
 
         change_points = self.__test_statistic.get_change_points(assessments)

@@ -30,15 +30,10 @@ class SVMAlgorithm(Classifier):
         self.__model: SVC | None = None
         self.__window: list[float | np.float64] = None
 
-    @property
-    def window(self) -> list[float | np.float64] | None:
-        return self.__window
-    
-    @window.setter
-    def window(self, val: Iterable[float | np.float64]) -> None:
-        self.__window = list(val)
+    def classify(self, window: Iterable[float | np.float64]) -> None:
+        self.__window = list(window)
 
-    def classify_barrier(self, time: int) -> float:
+    def assess_barrier(self, time: int) -> float:
         """
         Calaulates quality function in specified point.
 

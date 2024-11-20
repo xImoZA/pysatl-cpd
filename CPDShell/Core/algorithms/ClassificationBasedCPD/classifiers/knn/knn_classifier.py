@@ -40,17 +40,12 @@ class KNNAlgorithm(Classifier):
         self.__window: list[float | np.float64] = None
         self.__knn_graph: KNNGraph | None = None
 
-    @property
-    def window(self) -> list[float | np.float64] | None:
-        return self.__window
-    
-    @window.setter
-    def window(self, val: Iterable[float | np.float64]) -> None:
-        self.__window = list(val)
-        self.__knn_graph = KNNGraph(val, self.__metric, self.__k, self.__delta)
+    def classify(self, window: Iterable[float | np.float64]) -> None:
+        self.__window = list(window)
+        self.__knn_graph = KNNGraph(window, self.__metric, self.__k, self.__delta)
         self.__knn_graph.build()
 
-    def classify_barrier(self, time: int) -> float:
+    def assess_barrier(self, time: int) -> float:
         """
         Calaulates quality function in specified point.
 
