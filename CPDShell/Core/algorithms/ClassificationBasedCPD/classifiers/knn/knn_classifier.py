@@ -24,7 +24,7 @@ class KNNAlgorithm(Classifier):
     def __init__(
         self,
         metric: tp.Callable[[float, float], float] | tp.Callable[[np.float64, np.float64], float],
-        k=3,
+        k=7,
         delta: float = 1e-12,
     ) -> None:
         """

@@ -29,12 +29,21 @@ class ClassificationAlgorithm(Algorithm):
         :param indent_coeff: Coefficient for evaluating indent from window borders.
         The indentation is calculated by multiplying the given coefficient by the size of window.
         """
-        self.__classifiser = classifier
         self.__test_statistic = test_statistic
+
+        self.__classifiser = classifier
         self.__shift_coeff = indent_coeff
 
         self.__change_points: list[int] = []
         self.__change_points_count = 0
+
+    @property
+    def test_statistic(self) -> TestStatistic:
+        return self.__test_statistic
+
+    @test_statistic.setter
+    def test_statistic(self, test_statistic) -> None:
+        self.__test_statistic = test_statistic
 
     def detect(self, window: Iterable[float | np.float64]) -> int:
         """Finds change points in window.
@@ -42,7 +51,7 @@ class ClassificationAlgorithm(Algorithm):
         :param window: part of global data for finding change points.
         :return: the number of change points in the window.
         """
-        self.__process_data(False, window)
+        self.__process_data(window)
         return self.__change_points_count
 
     def localize(self, window: Iterable[float | np.float64]) -> list[int]:
