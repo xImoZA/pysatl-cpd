@@ -8,9 +8,8 @@ from CPDShell.Core.algorithms.BayesianCPD.likelihoods.gaussian_unknown_mean_and_
     GaussianUnknownMeanAndVariance,
 )
 from CPDShell.Core.algorithms.BayesianCPD.localizers.simple_localizer import SimpleLocalizer
-from CPDShell.Core.algorithms.classification_algorithm import ClassificationAlgorithm
-from CPDShell.Core.algorithms.ClassificationBasedCPD.classifiers.knn.knn_classifier import KNNAlgorithm
 from CPDShell.Core.algorithms.ClassificationBasedCPD.test_statistics.threshold_overcome import ThresholdOvercome
+from CPDShell.Core.algorithms.knn_algorithm import KNNAlgorithm
 from CPDShell.generator.generator import ScipyDatasetGenerator
 from CPDShell.generator.saver import DatasetSaver
 from CPDShell.shell import CPDShell
@@ -44,14 +43,13 @@ K = 5
 KNN_THRESHOLD = 3.5
 OFFSET_COEFF = 0.25
 
-knn_classifier = KNNAlgorithm(metric, K)
 statistic = ThresholdOvercome(KNN_THRESHOLD)
-knn_algorithm = ClassificationAlgorithm(knn_classifier, statistic, OFFSET_COEFF)
+knn_algorithm = KNNAlgorithm(metric, statistic, OFFSET_COEFF, K)
 knn_cpd = CPDShell(data, knn_algorithm)
 
 knn_cpd.scrubber.window_length = 16
 knn_cpd.scrubber.movement_k = 0.5
-knn_cpd.scenario.change_point_number = 4
+knn_cpd.scenario.change_point_number = 100
 
 res_knn = knn_cpd.run_cpd()
 res_knn.visualize(True)

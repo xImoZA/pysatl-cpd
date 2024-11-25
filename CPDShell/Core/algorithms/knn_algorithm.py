@@ -1,26 +1,34 @@
 """
-Module for implementation of CPD algorithm based on classification.
+Module for implementation of CPD algorithm based on knn classification.
 """
 
 __author__ = "Artemii Patov"
 __copyright__ = "Copyright (c) 2024 Artemii Patov"
 __license__ = "SPDX-License-Identifier: MIT"
 
+import typing as tp
 from collections.abc import Iterable
 
 import numpy as np
 
 from CPDShell.Core.algorithms.abstract_algorithm import Algorithm
-from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.iquality_metric import QualityMetric
 from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.istatistic_test import TestStatistic
+from CPDShell.Core.algorithms.KNNCPD.knn_classifier import KNNClassifier
 
 
-class ClassificationAlgorithm(Algorithm):
+class KNNAlgorithm(Algorithm):
     """
     The class implementing change point detection algorithm based on classification.
     """
 
-    def __init__(self, quality_metric: QualityMetric, test_statistic: TestStatistic, indent_coeff: float) -> None:
+    def __init__(
+        self,
+        distanceFunc: tp.Callable[[float, float], float] | tp.Callable[[np.float64, np.float64], float],
+        test_statistic: TestStatistic,
+        indent_coeff: float,
+        k=7,
+        delta: float = 1e-12,
+    ) -> None:
         """
         Initializes a new instance of classification based change point detection algorithm.
 
@@ -30,9 +38,9 @@ class ClassificationAlgorithm(Algorithm):
         The indentation is calculated by multiplying the given coefficient by the size of window.
         """
         self.__test_statistic = test_statistic
-        self.__quality_metric = quality_metric
 
         self.__shift_coeff = indent_coeff
+        self.__classifier = KNNClassifier(distanceFunc, k, delta)
 
         self.__change_points: list[int] = []
         self.__change_points_count = 0
@@ -74,6 +82,8 @@ class ClassificationAlgorithm(Algorithm):
         if sample_size == 0:
             return
 
+        self.__classifier.classify(window)
+
         # Examining each point.
         # Boundaries are always change points.
         first_point = int(sample_size * self.__shift_coeff)
@@ -81,7 +91,7 @@ class ClassificationAlgorithm(Algorithm):
         assessments = []
 
         for time in range(first_point, last_point):
-            quality = self.__quality_metric.assess_with_barrier(window, time)
+            quality = self.__classifier.assess_barrier(time)
             assessments.append(quality)
 
         change_points = self.__test_statistic.get_change_points(assessments)

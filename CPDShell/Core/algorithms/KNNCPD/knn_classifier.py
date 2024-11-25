@@ -12,11 +12,10 @@ from math import sqrt
 
 import numpy as np
 
-from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.iclassifier import Classifier
-from CPDShell.Core.algorithms.ClassificationBasedCPD.classifiers.knn.knn_graph import KNNGraph
+from .knn_graph import KNNGraph
 
 
-class KNNAlgorithm(Classifier):
+class KNNClassifier:
     """
     The class implementing classifier based on nearest neighbours.
     """
