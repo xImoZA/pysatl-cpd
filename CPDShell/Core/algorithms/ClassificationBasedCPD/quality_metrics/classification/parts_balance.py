@@ -14,15 +14,16 @@ from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.iclassifier impor
 from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.iquality_metric import QualityMetric
 
 
-class PartsDifference(QualityMetric):
+class PartsBalance(QualityMetric):
     """
-    The class implementing quality metric based on difference between left and right parts.
+    The class implementing quality metric based on balance between left and right parts.
     """
 
     def assess_with_barrier(self, classifier: Classifier, sample: Iterable[float | np.float64], time: int) -> float:
         """Evaluates quality function based on classificator in the specified point.
 
-        :param window: sample to be classified.
+        :param classify: Classifier that classifies the given sample.
+        :param sample: Sample to classify.
         :param time: Index of barrier in the given sample to calculate quality.
         :return: Quality assessment.
         """

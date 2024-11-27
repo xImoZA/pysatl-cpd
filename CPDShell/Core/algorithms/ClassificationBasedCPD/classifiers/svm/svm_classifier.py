@@ -29,14 +29,15 @@ class SVMAlgorithm(Classifier):
         """Trains classifier on the given sample.
 
         :param sample: sample for training classifier.
+        :param barrier: index of observation that splits the given sample.
         """
         classes = [0 if i <= barrier else 1 for i in range(len(sample))]
         self.__model = SVC()
         self.__model.fit(sample, classes)
 
     def predict(self, sample: list[float | np.float64]) -> np.ndarray:
-        """Applies classificator to the given sample.
+        """Classifies observations in the given sample based on training with barrier.
 
-        :param window: part of global data for finding change points.
+        :param sample: sample to classify.
         """
         return self.__model.predict(sample)

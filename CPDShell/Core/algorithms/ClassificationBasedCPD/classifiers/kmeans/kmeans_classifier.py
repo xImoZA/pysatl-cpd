@@ -6,6 +6,7 @@ __author__ = "Artemii Patov"
 __copyright__ = "Copyright (c) 2024 Artemii Patov"
 __license__ = "SPDX-License-Identifier: MIT"
 
+from collections.abc import Iterable
 
 import numpy as np
 from sklearn.cluster import KMeans
@@ -27,22 +28,24 @@ class KMeansAlgorithm(Classifier):
         self.__model: KMeans | None = None
         self.__sample: list[float | np.float64] | None = None
 
-    def train(self, sample: list[float | np.float64], barrier: int) -> None:
+    def train(self, sample: Iterable[float | np.float64], barrier: int) -> None:
         """Trains classifier on the given sample.
 
         :param sample: sample for training classifier.
+        :param barrier: index of observation that splits the given sample.
         """
-        if self.__sample == sample:
+        sample_list = list(sample)
+        if self.__sample == sample_list:
             return
 
         k_means = KMeans(n_clusters=2)
-        self.__sample = sample
-        window_reshaped = np.array(sample).reshape(-1, 1)
+        self.__sample = sample_list
+        window_reshaped = np.array(sample_list).reshape(-1, 1)
         self.__model = k_means.fit(window_reshaped)
 
     def predict(self, sample: list[float | np.float64]) -> np.ndarray:
-        """Applies classificator to the given sample.
+        """Classifies observations in the given sample based on training with barrier.
 
-        :param window: part of global data for finding change points.
+        :param sample: sample to classify.
         """
         return self.__model.labels_

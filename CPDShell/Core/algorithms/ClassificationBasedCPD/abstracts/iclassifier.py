@@ -20,9 +20,14 @@ class Classifier(ABC):
         """Trains classifier on the given sample.
 
         :param sample: sample for training classifier.
+        :param barrier: index of observation that splits the given sample.
         """
         raise NotImplementedError
 
     @abstractmethod
     def predict(self, sample: list[float | np.float64]) -> np.ndarray:
+        """Classifies observations in the given sample based on training with barrier.
+
+        :param sample: sample to classify.
+        """
         raise NotImplementedError
