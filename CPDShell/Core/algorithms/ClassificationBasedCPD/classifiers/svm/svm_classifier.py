@@ -6,8 +6,6 @@ __author__ = "Artemii Patov"
 __copyright__ = "Copyright (c) 2024 Artemii Patov"
 __license__ = "SPDX-License-Identifier: MIT"
 
-from collections.abc import Iterable
-
 import numpy as np
 from sklearn.svm import SVC
 
@@ -27,18 +25,25 @@ class SVMAlgorithm(Classifier):
         """
         self.__model: SVC | None = None
 
-    def classify(
+    def train(
         self,
-        train_X: list[float | np.float64],
-        train_Y: list[float | np.float64],
-        to_classify: Iterable[float | np.float64],
+        sample: list[float | np.float64],
+        barrier: int
+    ) -> None:
+        """Trains classifier on the given sample.
+
+        :param sample: sample for training classifier.
+        """
+        classes = [0 if i <= barrier else 1 for i in range(len(sample))]
+        self.__model = SVC()
+        self.__model.fit(sample, classes)
+
+    def predict(
+        self,
+        sample: list[float | np.float64]
     ) -> np.ndarray:
         """Applies classificator to the given sample.
 
         :param window: part of global data for finding change points.
         """
-        self.__model = SVC()
-        self.__model.fit(train_X, train_Y)
-        prediction = self.__model.predict(to_classify)
-
-        return prediction
+        return self.__model.predict(sample)

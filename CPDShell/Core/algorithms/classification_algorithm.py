@@ -11,6 +11,7 @@ from collections.abc import Iterable
 import numpy as np
 
 from CPDShell.Core.algorithms.abstract_algorithm import Algorithm
+from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.iclassifier import Classifier
 from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.iquality_metric import QualityMetric
 from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.istatistic_test import TestStatistic
 
@@ -20,7 +21,7 @@ class ClassificationAlgorithm(Algorithm):
     The class implementing change point detection algorithm based on classification.
     """
 
-    def __init__(self, quality_metric: QualityMetric, test_statistic: TestStatistic, indent_coeff: float) -> None:
+    def __init__(self, classifier: Classifier, quality_metric: QualityMetric, test_statistic: TestStatistic, indent_coeff: float) -> None:
         """
         Initializes a new instance of classification based change point detection algorithm.
 
@@ -29,6 +30,7 @@ class ClassificationAlgorithm(Algorithm):
         :param indent_coeff: Coefficient for evaluating indent from window borders.
         The indentation is calculated by multiplying the given coefficient by the size of window.
         """
+        self.__classifier = classifier
         self.__test_statistic = test_statistic
         self.__quality_metric = quality_metric
 
@@ -81,7 +83,7 @@ class ClassificationAlgorithm(Algorithm):
         assessments = []
 
         for time in range(first_point, last_point):
-            quality = self.__quality_metric.assess_with_barrier(window, time)
+            quality = self.__quality_metric.assess_with_barrier(self.__classifier, window, time)
             assessments.append(quality)
 
         change_points = self.__test_statistic.get_change_points(assessments)
