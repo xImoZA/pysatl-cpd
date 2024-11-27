@@ -6,7 +6,6 @@ __author__ = "Artemii Patov"
 __copyright__ = "Copyright (c) 2024 Artemii Patov"
 __license__ = "SPDX-License-Identifier: MIT"
 
-from collections.abc import Iterable
 
 import numpy as np
 from sklearn.cluster import KMeans
@@ -28,11 +27,7 @@ class KMeansAlgorithm(Classifier):
         self.__model: KMeans | None = None
         self.__sample: list[float | np.float64] | None = None
 
-    def train(
-        self,
-        sample: list[float | np.float64],
-        barrier: int
-    ) -> None:
+    def train(self, sample: list[float | np.float64], barrier: int) -> None:
         """Trains classifier on the given sample.
 
         :param sample: sample for training classifier.
@@ -45,10 +40,7 @@ class KMeansAlgorithm(Classifier):
         window_reshaped = np.array(sample).reshape(-1, 1)
         self.__model = k_means.fit(window_reshaped)
 
-    def predict(
-        self,
-        sample: list[float | np.float64]
-    ) -> np.ndarray:
+    def predict(self, sample: list[float | np.float64]) -> np.ndarray:
         """Applies classificator to the given sample.
 
         :param window: part of global data for finding change points.

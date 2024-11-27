@@ -34,4 +34,3 @@ class PartsDifference(QualityMetric):
         right_rate = sum(predicted_classes[time:sample_length]) / (sample_length - time)
 
         return abs(left_rate - right_rate)
-

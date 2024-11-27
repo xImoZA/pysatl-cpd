@@ -32,7 +32,7 @@ class PartsDifference(QualityMetric):
         classifier.train(train_sample, time / 2)
         predicted_classes = classifier.predict(test_sample)
         sample_length = len(predicted_classes)
-        
+
         right = predicted_classes.sum()
         left = sample_length - right
 

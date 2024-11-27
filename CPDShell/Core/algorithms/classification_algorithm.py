@@ -21,7 +21,9 @@ class ClassificationAlgorithm(Algorithm):
     The class implementing change point detection algorithm based on classification.
     """
 
-    def __init__(self, classifier: Classifier, quality_metric: QualityMetric, test_statistic: TestStatistic, indent_coeff: float) -> None:
+    def __init__(
+        self, classifier: Classifier, quality_metric: QualityMetric, test_statistic: TestStatistic, indent_coeff: float
+    ) -> None:
         """
         Initializes a new instance of classification based change point detection algorithm.
 

@@ -25,11 +25,7 @@ class RFClassifier(Classifier):
         """
         self.__model: RandomForestClassifier | None = None
 
-    def train(
-        self,
-        sample: list[float | np.float64],
-        barrier: int
-    ) -> None:
+    def train(self, sample: list[float | np.float64], barrier: int) -> None:
         """Trains classifier on the given sample.
 
         :param sample: sample for training classifier.
@@ -38,10 +34,7 @@ class RFClassifier(Classifier):
         self.__model = RandomForestClassifier()
         self.__model.fit(sample, classes)
 
-    def predict(
-        self,
-        sample: list[float | np.float64]
-    ) -> np.ndarray:
+    def predict(self, sample: list[float | np.float64]) -> np.ndarray:
         """Applies classificator to the given sample.
 
         :param window: part of global data for finding change points.
