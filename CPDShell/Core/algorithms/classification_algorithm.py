@@ -28,6 +28,8 @@ class ClassificationAlgorithm(Algorithm):
         Initializes a new instance of classification based change point detection algorithm.
 
         :param classifier: Classifier for sample classification.
+        :param quality_metric: Metric to assess independence of the two samples
+        resulting from splitting the original sample.
         :param test_statistic: Criterion to separate change points from other points in sample.
         :param indent_coeff: Coefficient for evaluating indent from window borders.
         The indentation is calculated by multiplying the given coefficient by the size of window.
@@ -85,7 +87,11 @@ class ClassificationAlgorithm(Algorithm):
         assessments = []
 
         for time in range(first_point, last_point):
-            quality = self.__quality_metric.assess_with_barrier(self.__classifier, window, time)
+            train_sample, test_sample = self.__split_sample(sample)
+            self.__classifier.train(train_sample, time / 2)
+            classes = self.__classifier.predict(test_sample)
+
+            quality = self.__quality_metric.assess_barrier(classes, time / 2)
             assessments.append(quality)
 
         change_points = self.__test_statistic.get_change_points(assessments)
@@ -93,3 +99,14 @@ class ClassificationAlgorithm(Algorithm):
         # Shifting change points coordinates according to their place in window.
         self.__change_points = list(map(lambda x: x + first_point, change_points))
         self.__change_points_count = len(change_points)
+
+    # Splits the given sample into train and test samples.
+    # Strategy: even elements goes to the train sample; uneven --- to the test sample
+    # Soon classification algorithm will be more generalized: the split strategy will be one of the parameters.
+    def __split_sample(
+        self, sample: Iterable[float | np.float64]
+    ) -> tuple[list[float | np.float64], list[float | np.float64]]:
+        train_sample = [[x] for i, x in enumerate(sample) if i % 2 == 0]
+        test_sample = [[x] for i, x in enumerate(sample) if i % 2 != 0]
+
+        return train_sample, test_sample
