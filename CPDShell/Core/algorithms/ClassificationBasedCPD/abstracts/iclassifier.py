@@ -7,7 +7,6 @@ __copyright__ = "Copyright (c) 2024 Artemii Patov"
 __license__ = "SPDX-License-Identifier: MIT"
 
 from abc import ABC, abstractmethod
-from collections.abc import Iterable
 
 import numpy as np
 
