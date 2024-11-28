@@ -88,7 +88,7 @@ class ClassificationAlgorithm(Algorithm):
 
         for time in range(first_point, last_point):
             train_sample, test_sample = self.__split_sample(sample)
-            self.__classifier.train(train_sample, time / 2)
+            self.__classifier.train(train_sample, int(time / 2))
             classes = self.__classifier.predict(test_sample)
 
             quality = self.__quality_metric.assess_barrier(classes, time / 2)
@@ -105,7 +105,7 @@ class ClassificationAlgorithm(Algorithm):
     # Soon classification algorithm will be more generalized: the split strategy will be one of the parameters.
     def __split_sample(
         self, sample: Iterable[float | np.float64]
-    ) -> tuple[list[float | np.float64], list[float | np.float64]]:
+    ) -> tuple[list[list[float | np.float64]], list[list[float | np.float64]]]:
         train_sample = [[x] for i, x in enumerate(sample) if i % 2 == 0]
         test_sample = [[x] for i, x in enumerate(sample) if i % 2 != 0]
 

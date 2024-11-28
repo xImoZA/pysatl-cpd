@@ -16,7 +16,7 @@ class Classifier(ABC):
     """Classifier's abstract base class."""
 
     @abstractmethod
-    def train(self, sample: Iterable[float | np.float64], barrier: int) -> None:
+    def train(self, sample: list[list[float | np.float64]], barrier: int) -> None:
         """Trains classifier on the given sample.
 
         :param sample: sample for training classifier.
@@ -25,7 +25,7 @@ class Classifier(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def predict(self, sample: list[float | np.float64]) -> np.ndarray:
+    def predict(self, sample: list[list[float | np.float64]]) -> np.ndarray:
         """Classifies observations in the given sample based on training with barrier.
 
         :param sample: sample to classify.
