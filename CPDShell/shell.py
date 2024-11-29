@@ -131,9 +131,9 @@ class CPDShell:
         """
         self._data = new_data
         if isinstance(new_data, LabeledCPData):
-            self.cpd_core.scrubber.data = new_data.raw_data
+            self.cpd_core.scrubber._data = new_data.raw_data
         else:
-            self.cpd_core.scrubber.data = new_data
+            self.cpd_core.scrubber._data = new_data
 
     @property
     def scrubber(self) -> Scrubber:

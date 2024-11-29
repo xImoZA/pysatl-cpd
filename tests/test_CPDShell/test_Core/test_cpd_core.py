@@ -35,8 +35,8 @@ class TestCPDCore:
     )
     def test_run(self, scenario_param, data, alg_class, alg_param, scrubber_data_size, expected):
         scenario = Scenario(*scenario_param)
-        scrubber = LinearScrubber(scenario)
+        scrubber = LinearScrubber()
         algorithm = alg_class(*alg_param)
 
-        core = CPDCore(data, scrubber, algorithm, scrubber_data_size)
+        core = CPDCore(scenario, data, scrubber, algorithm, scrubber_data_size)
         assert core.run() == expected

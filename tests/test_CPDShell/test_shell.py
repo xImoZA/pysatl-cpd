@@ -27,7 +27,7 @@ class TestCPDShell:
 
     def test_init(self) -> None:
         assert self.shell_normal._data == [1, 2, 3, 4]
-        assert self.shell_normal.cpd_core.scrubber.data == [1, 2, 3, 4]
+        assert self.shell_normal.cpd_core.scrubber._data == [1, 2, 3, 4]
         assert isinstance(self.shell_normal.cpd_core.algorithm, GraphAlgorithm)
 
         assert isinstance(self.shell_default.cpd_core.algorithm, GraphAlgorithm)
@@ -37,16 +37,16 @@ class TestCPDShell:
 
         assert self.shell_marked_data._data.raw_data == [1, 2, 3, 4]
         assert self.shell_marked_data._data.change_points == [4, 5, 6, 7]
-        assert list(self.shell_marked_data.scrubber.data.__iter__()) == [1, 2, 3, 4]
+        assert list(self.shell_marked_data.scrubber._data.__iter__()) == [1, 2, 3, 4]
 
     def test_data_getter_setter(self) -> None:
         assert self.shell_for_setter_getter.data == [4, 3, 2, 1]
-        assert self.shell_for_setter_getter.cpd_core.scrubber.data == [4, 3, 2, 1]
+        assert self.shell_for_setter_getter.cpd_core.scrubber._data == [4, 3, 2, 1]
 
         self.shell_for_setter_getter.data = [1, 3, 4]
 
         assert self.shell_for_setter_getter.data == [1, 3, 4]
-        assert self.shell_for_setter_getter.cpd_core.scrubber.data == [1, 3, 4]
+        assert self.shell_for_setter_getter.cpd_core.scrubber._data == [1, 3, 4]
 
     def test_scrubber_setter(self) -> None:
         class TestNewScrubber(Scrubber):
@@ -55,7 +55,7 @@ class TestCPDShell:
         previous_scrubber = self.shell_for_setter_getter.scrubber
         self.shell_for_setter_getter.scrubber = TestNewScrubber
         assert isinstance(self.shell_for_setter_getter.scrubber, TestNewScrubber)
-        assert self.shell_for_setter_getter.scrubber.data == previous_scrubber.data
+        assert self.shell_for_setter_getter.scrubber._data == previous_scrubber._data
         assert self.shell_for_setter_getter.scrubber.scenario == previous_scrubber.scenario
 
     def test_CPDalgorithm_getter_setter(self) -> None:

@@ -38,3 +38,12 @@ class DataController:
         """Function for mapping window change points to global data"""
 
         self.change_points += list(map(lambda point: point + self._data_start_index, window_change_points))
+
+    @property
+    def data(self) -> Sequence[float | numpy.float64]:
+        return self._data
+
+    @data.setter
+    def data(self, new_data) -> None:
+        self._data = new_data
+        self.restart()

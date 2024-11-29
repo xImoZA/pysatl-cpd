@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import Sequence, Iterable
+from typing import Sequence, Iterable, Optional
 
 import numpy
 
-from CPDShell.Core.data_controller import DataController
 from CPDShell.Core.scenario import Scenario
 
 
@@ -13,19 +12,14 @@ class AbstractScrubber(ABC):
     by change point detection algorithms
     """
 
-    def __init__(
-            self,
-            scenario: Scenario,
-    ) -> None:
+    def __init__(self) -> None:
         """A scrubber for dividing data into windows
         and subsequent processing of data windows
         by change point detection algorithms
 
-        :param scenario: :class:`Scenario` object with information about the scrubber task
-        :param data_controller: data controller for getting values for change point detection
         """
-        self.scenario = scenario
-        self.data = []
+        self._scenario: Optional[Scenario] = None
+        self._data: Sequence[float | numpy.float64] = []
         self.is_running = True
         self.change_points: list[int] = []
 
@@ -49,4 +43,21 @@ class AbstractScrubber(ABC):
 
     def add_data(self, new_data: Sequence[float | numpy.float64]) -> None:
         """Function for adding new data to Scrubber"""
-        self.data += new_data  # TODO Sequence __add__?
+        self._data += new_data  # TODO Sequence __add__?
+
+    @property
+    def scenario(self) -> Scenario:
+        return self._scenario
+
+    @scenario.setter
+    def scenario(self, new_scenario) -> None:
+        self._scenario = new_scenario
+
+    @property
+    def data(self) -> Sequence[float | numpy.float64]:
+        return self._data
+
+    @data.setter
+    def data(self, new_data) -> None:
+        self._data = new_data
+        self.restart()

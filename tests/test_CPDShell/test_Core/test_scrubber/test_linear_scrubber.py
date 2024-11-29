@@ -27,8 +27,9 @@ class TestLinearScrubber:
     )
     def test_generate_window(self, scenario_param, data, window_length, expected_windows):
         scenario = Scenario(*scenario_param)
-        scrubber = LinearScrubber(scenario, window_length)
-        scrubber.data = data
+        scrubber = LinearScrubber(window_length)
+        scrubber.scenario = scenario
+        scrubber._data = data
         for window in scrubber.get_windows():
             assert window == expected_windows.pop(0)
 
@@ -55,8 +56,10 @@ class TestLinearScrubber:
     )
     def test_add_change_points(self, scenario_param, data, change_points, expected_change_points):
         scenario = Scenario(*scenario_param)
-        scrubber = LinearScrubber(scenario, 100)
-        scrubber.data = data
+        scrubber = LinearScrubber(100)
+        scrubber.scenario = scenario
+
+        scrubber._data = data
         for window in scrubber.get_windows():
             scrubber.add_change_points(change_points.pop(0))
         assert scrubber.change_points == expected_change_points
