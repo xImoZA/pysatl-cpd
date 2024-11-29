@@ -1,8 +1,9 @@
 import pytest
 
 from CPDShell.Core.algorithms.graph_algorithm import GraphAlgorithm
-from CPDShell.Core.cpd_core import CPDCore, Scrubber
+from CPDShell.Core.cpd_core import CPDCore
 from CPDShell.Core.scenario import Scenario
+from CPDShell.Core.scrubber.linear_scrubber import LinearScrubber
 
 
 def custom_comparison(node1, node2):
@@ -12,28 +13,30 @@ def custom_comparison(node1, node2):
 
 class TestCPDCore:
     @pytest.mark.parametrize(
-        "scenario_param,data,alg_class,alg_param,expected",
+        "scenario_param,data,alg_class,alg_param,scrubber_data_size,expected",
         (
-            (
-                (1, True),
-                (1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100, 100, 100),
-                GraphAlgorithm,
-                (custom_comparison, 2),
-                [6],
-            ),
-            (
-                (1, False),
-                (1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100, 100, 100),
-                GraphAlgorithm,
-                (custom_comparison, 2),
-                [10],
-            ),
+                (
+                        (1, True),
+                        (1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100, 100, 100),
+                        GraphAlgorithm,
+                        (custom_comparison, 2),
+                        10,
+                        [6, 16],
+                ),
+                (
+                        (1, False),
+                        (1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100, 100, 100),
+                        GraphAlgorithm,
+                        (custom_comparison, 2),
+                        10,
+                        [0, 10],
+                ),
         ),
     )
-    def test_run(self, scenario_param, data, alg_class, alg_param, expected):
+    def test_run(self, scenario_param, data, alg_class, alg_param, scrubber_data_size, expected):
         scenario = Scenario(*scenario_param)
-        scrubber = Scrubber(scenario, data)
+        scrubber = LinearScrubber(scenario)
         algorithm = alg_class(*alg_param)
 
-        core = CPDCore(scrubber, algorithm)
+        core = CPDCore(data, scrubber, algorithm, scrubber_data_size)
         assert core.run() == expected
