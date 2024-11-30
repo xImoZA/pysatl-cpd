@@ -1,4 +1,4 @@
-from typing import Sequence
+from collections.abc import Sequence
 
 import numpy
 
@@ -11,8 +11,14 @@ from .scrubber.abstract_scrubber import AbstractScrubber
 class CPDCore:
     """Change Point Detection Core"""
 
-    def __init__(self, scenario: Scenario, data: Sequence[float | numpy.float64], scrubber: AbstractScrubber, algorithm: Algorithm,
-                 scrubber_data_size: int) -> None:
+    def __init__(
+        self,
+        scenario: Scenario,
+        data: Sequence[float | numpy.float64],
+        scrubber: AbstractScrubber,
+        algorithm: Algorithm,
+        scrubber_data_size: int,
+    ) -> None:
         """Change Point Detection Core
 
         :param scenario: :class:`Scenario` object with information about the task

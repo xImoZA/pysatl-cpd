@@ -1,4 +1,4 @@
-from typing import Iterable
+from collections.abc import Iterable
 
 import numpy
 from numpy.random.mtrand import Sequence
@@ -31,7 +31,7 @@ class DataController:
         :return: data pieces iterator"""
         while self._data_start_index < len(self._data):
             cur_index = self._data_start_index
-            yield self._data[cur_index:self._data_start_index + self._scrubber_data_size]
+            yield self._data[cur_index : self._data_start_index + self._scrubber_data_size]
             self._data_start_index += self._scrubber_data_size
 
     def add_change_points(self, window_change_points) -> None:

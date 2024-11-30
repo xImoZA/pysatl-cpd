@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Sequence, Iterable, Optional
+from collections.abc import Iterable, Sequence
 
 import numpy
 
@@ -18,7 +18,7 @@ class AbstractScrubber(ABC):
         by change point detection algorithms
 
         """
-        self._scenario: Optional[Scenario] = None
+        self._scenario: Scenario | None = None
         self._data: Sequence[float | numpy.float64] = []
         self.is_running = True
         self.change_points: list[int] = []

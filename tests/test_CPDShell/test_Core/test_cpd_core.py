@@ -15,22 +15,22 @@ class TestCPDCore:
     @pytest.mark.parametrize(
         "scenario_param,data,alg_class,alg_param,scrubber_data_size,expected",
         (
-                (
-                        (1, True),
-                        (1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100, 100, 100),
-                        GraphAlgorithm,
-                        (custom_comparison, 2),
-                        10,
-                        [6, 16],
-                ),
-                (
-                        (1, False),
-                        (1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100, 100, 100),
-                        GraphAlgorithm,
-                        (custom_comparison, 2),
-                        10,
-                        [0, 10],
-                ),
+            (
+                (1, True),
+                (1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100, 100, 100),
+                GraphAlgorithm,
+                (custom_comparison, 2),
+                10,
+                [6, 16],
+            ),
+            (
+                (1, False),
+                (1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100, 100, 100),
+                GraphAlgorithm,
+                (custom_comparison, 2),
+                10,
+                [0, 10],
+            ),
         ),
     )
     def test_run(self, scenario_param, data, alg_class, alg_param, scrubber_data_size, expected):

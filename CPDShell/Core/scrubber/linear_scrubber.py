@@ -1,15 +1,18 @@
-from typing import Sequence, Iterable
+from collections.abc import Iterable, Sequence
 
 import numpy
 
-from CPDShell.Core.scenario import Scenario
 from CPDShell.Core.scrubber.abstract_scrubber import AbstractScrubber
 
 
 class LinearScrubber(AbstractScrubber):
     """A linear scrubber for dividing data into windows by moving them through data"""
 
-    def __init__(self, window_length: int = 100, movement_k: float = 1.0 / 3.0, ):
+    def __init__(
+        self,
+        window_length: int = 100,
+        movement_k: float = 1.0 / 3.0,
+    ):
         """A linear scrubber for dividing data into windows by moving them through data
 
         :param window_length: length of data window
@@ -27,11 +30,11 @@ class LinearScrubber(AbstractScrubber):
     def get_windows(self) -> Iterable[Sequence[float | numpy.float64]]:
         if self._data:
             window_end = self._window_start + self._window_length
-            yield self._data[self._window_start:window_end]
+            yield self._data[self._window_start : window_end]
             self._window_start += int(self._window_length * self._movement_k)
         while self._window_start + self._window_length <= len(self._data) and self.is_running:
             window_end = self._window_start + self._window_length
-            yield self._data[self._window_start:window_end]
+            yield self._data[self._window_start : window_end]
             self._window_start += int(self._window_length * self._movement_k)
 
     def add_change_points(self, window_change_points: list[int]) -> None:
@@ -41,5 +44,6 @@ class LinearScrubber(AbstractScrubber):
         change_point_number = max(0, max_change_points - len(self.change_points))
         if change_point_number == 0:
             self.is_running = False
-        self.change_points += list(map(lambda point: self._window_start + point,
-                                       window_change_points[:change_point_number]))
+        self.change_points += list(
+            map(lambda point: self._window_start + point, window_change_points[:change_point_number])
+        )
