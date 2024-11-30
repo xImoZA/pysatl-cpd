@@ -9,7 +9,8 @@ from matplotlib import pyplot as plt
 from CPDShell.Core.algorithms.graph_algorithm import Algorithm, GraphAlgorithm
 from CPDShell.Core.cpd_core import CPDCore
 from CPDShell.Core.scenario import Scenario
-from CPDShell.Core.scrubber.scrubber import Scrubber
+from CPDShell.Core.scrubber.abstract_scrubber import AbstractScrubber
+from CPDShell.Core.scrubber.linear_scrubber import LinearScrubber
 from CPDShell.labeled_data import LabeledCPData
 
 
@@ -97,26 +98,25 @@ class CPDShell:
 
     def __init__(
         self,
+        scenario: Scenario,
         data: Iterable[float | numpy.float64] | LabeledCPData,
         cpd_algorithm: Optional["Algorithm"] = None,
-        scrubber_class: type[Scrubber] = Scrubber,
+        scrubber: AbstractScrubber = LinearScrubber(),
     ) -> None:
         """CPDShell object constructor
 
         :param: data: data for detection of CP
-        :param: CPDalgorithm: CPD algorithm, that will search for change points
-        :param: scrubber_class: class of preferable scrubber for splitting data into parts
+        :param: cpd_algorithm: CPD algorithm, that will search for change points
+        :param: scrubber: scrubber object for splitting data into parts
         """
         self._data: Iterable[float | numpy.float64] | LabeledCPData = data
-        scrubber_class = scrubber_class if scrubber_class is not None else Scrubber
         arg = 5
         cpd_algorithm = (
             cpd_algorithm if cpd_algorithm is not None else GraphAlgorithm(lambda a, b: abs(a - b) <= arg, 2)
         )
         self.cpd_core: CPDCore = CPDCore(
-            scrubber_class(Scenario(10, True), data.raw_data if isinstance(data, LabeledCPData) else data),
-            cpd_algorithm,
-        )  # if no algo or scrubber was given, then some standard
+            scenario, data.raw_data if isinstance(data, LabeledCPData) else data, scrubber, cpd_algorithm, 10
+        )
 
     @property
     def data(self) -> Iterable[float | numpy.float64]:
@@ -130,31 +130,28 @@ class CPDShell:
         :param: new_data: new data, to replace the current one
         """
         self._data = new_data
-        if isinstance(new_data, LabeledCPData):
-            self.cpd_core.scrubber._data = new_data.raw_data
-        else:
-            self.cpd_core.scrubber._data = new_data
+        self.cpd_core.data_controller.data = new_data.raw_data if isinstance(new_data, LabeledCPData) else new_data
 
     @property
-    def scrubber(self) -> Scrubber:
+    def scrubber(self) -> AbstractScrubber:
         """Getter method for scrubber"""
         return self.cpd_core.scrubber
 
     @scrubber.setter
-    def scrubber(self, new_scrubber_class: type[Scrubber]) -> None:
+    def scrubber(self, new_scrubber: AbstractScrubber) -> None:
         """Setter method for changing scrubber
 
-        :param: new_scrubber_class: new scrubber, to replace the current one
+        :param: new_scrubber: new scrubber object, to replace the current one
         """
-        self.cpd_core.scrubber = new_scrubber_class(self.cpd_core.scrubber.scenario, self._data)
+        self.cpd_core.scrubber = new_scrubber
 
     @property
-    def CPDalgorithm(self) -> Algorithm:
+    def cpd_algorithm(self) -> Algorithm:
         """Getter method for CPD algorithm param"""
         return self.cpd_core.algorithm
 
-    @CPDalgorithm.setter
-    def CPDalgorithm(self, new_algorithm: Algorithm) -> None:
+    @cpd_algorithm.setter
+    def cpd_algorithm(self, new_algorithm: Algorithm) -> None:
         """Setter method for changing CPD algorithm
 
         :param: new_algorithm: new CPD algorithm, to replace the current one
@@ -164,7 +161,7 @@ class CPDShell:
     @property
     def scenario(self) -> Scenario:
         """Getter method for scenario param"""
-        return self.cpd_core.scrubber.scenario
+        return self.cpd_core.scenario
 
     @scenario.setter
     def scenario(self, new_scenario: Scenario) -> None:
@@ -172,7 +169,7 @@ class CPDShell:
 
         :param: new_scenario: new scenario object, to replace the current one
         """
-        self.cpd_core.scrubber.scenario = new_scenario
+        self.cpd_core.scenario = new_scenario
 
     def change_scenario(self, change_point_number: int, to_localize: bool = False) -> None:
         """Method for editing scenario
@@ -180,10 +177,10 @@ class CPDShell:
         :param: change_point_number: number of change points user wants to detect
         :param: to_localize: bool value that states if it is necessary to localize change points
         """
-        self.cpd_core.scrubber.scenario = Scenario(change_point_number, to_localize)
+        self.cpd_core.scenario = Scenario(change_point_number, to_localize)
 
     def run_cpd(self) -> CPContainer:
-        """Execute CPD algorithm, returns ifrom dataclasses import dataclassts result and prints it
+        """Execute CPD algorithm and return container with its results
 
         :return: CPContainer object, containing algo result CP and expected CP if needed
         """
