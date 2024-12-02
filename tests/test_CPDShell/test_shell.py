@@ -8,7 +8,7 @@ from CPDShell.Core.algorithms.graph_algorithm import GraphAlgorithm
 from CPDShell.Core.scenario import Scenario
 from CPDShell.Core.scrubber.abstract_scrubber import AbstractScrubber
 from CPDShell.Core.scrubber.linear_scrubber import LinearScrubber
-from CPDShell.shell import CPContainer, CPDShell, LabeledCPData
+from CPDShell.shell import CPContainer, CPDResultsAnalyzer, CPDShell, LabeledCPData
 
 
 def custom_comparison(node1, node2):  # TODO: Remove it everywhere
@@ -101,6 +101,60 @@ class TestCPDShell:
         assert res_marked.result_diff == [4, 5, 6, 7]
 
 
+class TestCPDResultsAnalyzer:
+    @pytest.mark.parametrize(
+        "result1, result2, window, expected",
+        [
+            ([4, 5, 6, 7], [3, 5, 6], None, (2, 1, 1, 1)),
+            ([4, 5, 6, 7], [3, 5, 6], (5, 6), (1, 0, 0, 0)),
+            ([4, 5, 6, 7], [3, 5, 6], (0, 100), (2, 97, 2, 1)),
+            ([4, 5, 6, 7], [3, 5, 6], (6, 6), (0, 0, 0, 0)),
+            ([3, 5, 6, 7], [4, 5, 6], None, (2, 1, 1, 1)),
+            ([], [4, 5, 6], None, (0, 0, 0, 2)),
+            ([3, 5, 6, 7], [], None, (0, 4, 3, 0)),
+        ],
+    )
+    def test_count_confusion_matrix(self, result1, result2, window, expected):
+        assert CPDResultsAnalyzer.count_confusion_matrix(result1, result2, window) == expected
+
+    def test_count_confusion_matrix_exception_case(self):
+        with pytest.raises(ValueError):
+            CPDResultsAnalyzer.count_confusion_matrix([], [])
+
+    @pytest.mark.parametrize(
+        "result1, result2, window, expected",
+        [
+            ([4, 5, 6, 7], [3, 5, 6], None, 0.6),
+            ([4, 5, 6, 7], [3, 5, 6], (5, 6), 1.0),
+            ([4, 5, 6, 7], [3, 5, 6], (6, 6), 0.0),
+        ],
+    )
+    def test_count_accuracy(self, result1, result2, window, expected):
+        assert CPDResultsAnalyzer.count_accuracy(result1, result2, window) == expected
+
+    @pytest.mark.parametrize(
+        "result1, result2, window, expected",
+        [
+            ([4, 5, 6, 7], [3, 5, 6], None, 2 / 3),
+            ([4, 5, 6, 7], [3, 5, 6], (5, 6), 1.0),
+            ([4, 5, 6, 7], [3, 5, 6], (6, 6), 0.0),
+        ],
+    )
+    def test_count_precision(self, result1, result2, window, expected):
+        assert CPDResultsAnalyzer.count_precision(result1, result2, window) == expected
+
+    @pytest.mark.parametrize(
+        "result1, result2, window, expected",
+        [
+            ([4, 5, 6, 7], [3, 5, 6], None, 2 / 3),
+            ([4, 5, 6, 7], [3, 5, 6], (5, 6), 1.0),
+            ([4, 5, 6, 7], [3, 5, 6], (6, 6), 0.0),
+        ],
+    )
+    def test_count_recall(self, result1, result2, window, expected):
+        assert CPDResultsAnalyzer.count_recall(result1, result2, window) == expected
+
+
 class TestCPContainer:
     cont_default1 = CPContainer([1] * 15, [1, 2, 3], [2, 3, 4], 10)
     cont_default2 = CPContainer([1] * 15, [1, 2, 3, 6, 8], [2, 3, 4, 6], 20)
@@ -149,3 +203,7 @@ Computation time (sec): 5"""
         with tempfile.TemporaryDirectory() as tempdir:
             data.visualize(False, Path(tempdir), name)
             assert [f"{name}.png"] in [file_names for (_, _, file_names) in walk(tempdir)]
+
+    def test_mertic_exception_case(self):
+        with pytest.raises(ValueError):
+            self.cont_no_expected.count_confusion_matrix()

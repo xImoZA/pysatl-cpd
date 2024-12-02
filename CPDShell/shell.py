@@ -61,6 +61,53 @@ class CPContainer:
         method_output += f"Computation time (sec): {round(self.time_sec, 2)}"
         return method_output
 
+    def count_confusion_matrix(self, window: tuple[int, int] | None = None) -> tuple[int, int, int, int]:
+        """method for counting confusion matrix for hypothesis of equality of CPD results and expected
+        results on a window
+
+        :param: window: tuple of two indices (start, stop), determines a window for hypothesis
+
+        :return: tuple of integers (true-positive, true-negative, false-positive, false-negative)
+        """
+        if self.expected_result is None:
+            raise ValueError("this object is not provided with expected result, confusion matrix cannot be calculated")
+        return CPDResultsAnalyzer.count_confusion_matrix(self.result, self.expected_result, window)
+
+    def count_accuracy(self, window: tuple[int, int] | None = None) -> float:
+        """method for counting accuracy metric for hypothesis of equality of CPD results and expected
+        results on a window
+
+        :param: window: tuple of two indices (start, stop), determines a window for hypothesis
+
+        :return: float, accuracy metric
+        """
+        if self.expected_result is None:
+            raise ValueError("this object is not provided with expected result, accuracy cannot be calculated")
+        return CPDResultsAnalyzer.count_accuracy(self.result, self.expected_result, window)
+
+    def count_precision(self, window: tuple[int, int] | None = None) -> float:
+        """method for counting precision metric for hypothesis of equality of CPD results and expected
+        results on a window
+
+        :param: window: tuple of two indices (start, stop), determines a window for hypothesis
+
+        :return: float, precision metric
+        """
+        if self.expected_result is None:
+            raise ValueError("this object is not provided with expected result, precision cannot be calculated")
+        return CPDResultsAnalyzer.count_precision(self.result, self.expected_result, window)
+
+    def count_recall(self, window: tuple[int, int] | None = None) -> float:
+        """method for counting recall metric for hypothesis of equality of CPD results and expected results on a window
+
+        :param: window: tuple of two indices (start, stop), determines a window for hypothesis
+
+        :return: float, recall metric
+        """
+        if self.expected_result is None:
+            raise ValueError("this object is not provided with expected result, recall cannot be calculated")
+        return CPDResultsAnalyzer.count_recall(self.result, self.expected_result, window)
+
     def visualize(self, to_show: bool = True, output_directory: Path | None = None, name: str = "Graph") -> None:
         """method for building and analyzing graph
 
@@ -90,6 +137,92 @@ class CPContainer:
             plt.savefig(output_directory.joinpath(Path(name)))
         if to_show:
             plt.show()
+
+
+class CPDResultsAnalyzer:
+    """Class for counting confusion matrix and other metrics on CPD results"""
+
+    @staticmethod
+    def count_confusion_matrix(
+        result1: list[int | float], result2: list[int | float], window: tuple[int, int] | None = None
+    ) -> tuple[int, int, int, int]:
+        """static method for counting confusion matrix for hypothesis of equality of change points on a window
+
+        :param: result1: first array or list of change points, determined as prediction
+        :param: result2: second array or list of change points, determined as actual
+        :param: window: tuple of two indices (start, stop), determines a window for hypothesis
+
+        :return: tuple of integers (true-positive, true-negative, false-positive, false-negative)
+        """
+        if not result1 and not result2:
+            raise ValueError("no results and no predictions")
+        if window is None:
+            window = (min(result1 + result2), max(result1 + result2))
+        result1_set = set(result1)
+        result2_set = set(result2)
+        tp = tn = fp = fn = 0
+        for i in range(window[0], window[1]):
+            if i in result1_set:
+                if i in result2_set:
+                    tp += 1
+                    continue
+                fp += 1
+            elif i in result2_set:
+                fn += 1
+                continue
+            tn += 1
+        return tp, tn, fp, fn
+
+    @staticmethod
+    def count_accuracy(
+        result1: list[int | float], result2: list[int | float], window: tuple[int, int] | None = None
+    ) -> float:  # TODO: dont forget to write tests
+        """static method for counting accuracy metric for hypothesis of equality of change points on a window
+
+        :param: result1: first array or list of change points, determined as prediction
+        :param: result2: second array or list of change points, determined as actual
+        :param: window: tuple of two indices (start, stop), determines a window for hypothesis
+
+        :return: float, accuracy metric
+        """
+        tp, tn, fp, fn = CPDResultsAnalyzer.count_confusion_matrix(result1, result2, window)
+        if tp + tn == 0:
+            return 0.0
+        return (tp + tn) / (tp + tn + fp + fn)
+
+    @staticmethod
+    def count_precision(
+        result1: list[int | float], result2: list[int | float], window: tuple[int, int] | None = None
+    ) -> float:
+        """static method for counting precision metric for hypothesis of equality of change points on a window
+
+        :param: result1: first array or list of change points, determined as prediction
+        :param: result2: second array or list of change points, determined as actual
+        :param: window: tuple of two indices (start, stop), determines a window for hypothesis
+
+        :return: float, precision metric
+        """
+        tp, tn, fp, fn = CPDResultsAnalyzer.count_confusion_matrix(result1, result2, window)
+        if tp == 0:
+            return 0.0
+        return tp / (tp + fp)
+
+    @staticmethod
+    def count_recall(
+        result1: list[int | float], result2: list[int | float], window: tuple[int, int] | None = None
+    ) -> float:
+        """static method for counting recall metric for hypothesis of equality of change points on a window
+
+        :param: result1: first array or list of change points, determined as prediction
+        :param: result2: second array or list of change points, determined as actual
+        :param: window: tuple of two indices (start, stop), determines a window for hypothesis
+
+        :return: float, recall metric
+        """
+        tp, tn, fp, fn = CPDResultsAnalyzer.count_confusion_matrix(result1, result2, window)
+        if tp == 0:
+            return 0
+        return tp / (tp + fn)
 
 
 class CPDShell:
