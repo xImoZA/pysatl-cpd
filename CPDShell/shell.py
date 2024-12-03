@@ -248,7 +248,11 @@ class CPDShell:
             cpd_algorithm if cpd_algorithm is not None else GraphAlgorithm(lambda a, b: abs(a - b) <= arg, 2)
         )
         self.cpd_core: CPDCore = CPDCore(
-            scenario, data.raw_data if isinstance(data, LabeledCPData) else data, scrubber, cpd_algorithm, 10
+            scenario,
+            data.raw_data if isinstance(data, LabeledCPData) else data,
+            scrubber,
+            cpd_algorithm,
+            len(self._data) // 3,
         )
 
     @property

@@ -29,6 +29,9 @@ class LabeledCPData:
         """Shows main info about LabeledCPData object"""
         return f"data={self.raw_data}, change_points={self.change_points}"
 
+    def __len__(self):
+        return len(self.raw_data)
+
     @staticmethod
     def generate_cp_datasets(
         config_path: Path,
