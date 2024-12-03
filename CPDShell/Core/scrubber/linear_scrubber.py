@@ -1,3 +1,11 @@
+"""
+Module for implementation of Linear Scrubber.
+"""
+
+__author__ = "Romanyuk Artem"
+__copyright__ = "Copyright (c) 2024 Romanyuk Artem"
+__license__ = "SPDX-License-Identifier: MIT"
+
 from collections.abc import Iterable, Sequence
 
 import numpy

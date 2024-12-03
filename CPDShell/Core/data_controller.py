@@ -1,3 +1,11 @@
+"""
+Module for implementation of Data Controller.
+"""
+
+__author__ = "Romanyuk Artem"
+__copyright__ = "Copyright (c) 2024 Romanyuk Artem"
+__license__ = "SPDX-License-Identifier: MIT"
+
 from collections.abc import Iterable
 
 import numpy

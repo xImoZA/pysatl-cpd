@@ -1,3 +1,11 @@
+"""
+Module for Abstract Scrubber description.
+"""
+
+__author__ = "Romanyuk Artem"
+__copyright__ = "Copyright (c) 2024 Romanyuk Artem"
+__license__ = "SPDX-License-Identifier: MIT"
+
 from abc import ABC, abstractmethod
 from collections.abc import Iterable, Sequence
 
@@ -26,7 +34,7 @@ class AbstractScrubber(ABC):
     @abstractmethod
     def restart(self) -> None:
         """Function for restarting Scrubber"""
-        ...
+        raise NotImplementedError
 
     @abstractmethod
     def get_windows(self) -> Iterable[Sequence[float | numpy.float64]]:
@@ -34,12 +42,12 @@ class AbstractScrubber(ABC):
 
         :return: Iterator of data windows for change point detection algorithm
         """
-        ...
+        raise NotImplementedError
 
     @abstractmethod
     def add_change_points(self, window_change_points: list[int]) -> None:
         """Function for mapping window change points to scrubber data part"""
-        ...
+        raise NotImplementedError
 
     def add_data(self, new_data: Sequence[float | numpy.float64]) -> None:
         """Function for adding new data to Scrubber"""

@@ -1,3 +1,11 @@
+"""
+Module for Data Controller testing.
+"""
+
+__author__ = "Romanyuk Artem"
+__copyright__ = "Copyright (c) 2024 Romanyuk Artem"
+__license__ = "SPDX-License-Identifier: MIT"
+
 import pytest
 
 from CPDShell.Core.data_controller import DataController
