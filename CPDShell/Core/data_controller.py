@@ -42,8 +42,10 @@ class DataController:
             yield self._data[cur_index : self._data_start_index + self._scrubber_data_size]
             self._data_start_index += self._scrubber_data_size
 
-    def add_change_points(self, window_change_points) -> None:
-        """Function for mapping window change points to global data"""
+    def add_change_points(self, window_change_points: list[int]) -> None:
+        """Function for mapping window change points to global data
+
+        :param window_change_points: list of change points detected by scrubber"""
 
         self.change_points += list(map(lambda point: point + self._data_start_index, window_change_points))
 

@@ -6,7 +6,7 @@ __author__ = "Romanyuk Artem"
 __copyright__ = "Copyright (c) 2024 Romanyuk Artem"
 __license__ = "SPDX-License-Identifier: MIT"
 
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, MutableSequence
 
 import numpy
 
@@ -35,11 +35,7 @@ class LinearScrubber(Scrubber):
         self.change_points = []
         self.is_running = True
 
-    def get_windows(self) -> Iterable[Sequence[float | numpy.float64]]:
-        if self._data:
-            window_end = self._window_start + self._window_length
-            yield self._data[self._window_start : window_end]
-            self._window_start += int(self._window_length * self._movement_k)
+    def get_windows(self) -> Iterable[MutableSequence[float | numpy.float64]]:
         while (
             self._data
             and self._window_start == 0

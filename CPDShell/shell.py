@@ -1,5 +1,5 @@
 import time
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, MutableSequence
 from pathlib import Path
 from typing import Optional
 
@@ -19,7 +19,7 @@ class CPContainer:
 
     def __init__(
         self,
-        data: Sequence[float | numpy.float64],
+        data: MutableSequence[float | numpy.float64],
         result: list[int],
         expected_result: list[int] | None,
         time_sec: float,
@@ -261,7 +261,7 @@ class CPDShell:
         return self._data
 
     @data.setter
-    def data(self, new_data: Sequence[float | numpy.float64]) -> None:
+    def data(self, new_data: MutableSequence[float | numpy.float64]) -> None:
         """Setter method for changing data
 
         :param: new_data: new data, to replace the current one

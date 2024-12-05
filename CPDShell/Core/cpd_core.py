@@ -1,4 +1,4 @@
-from collections.abc import Sequence
+from collections.abc import MutableSequence
 
 import numpy
 
@@ -14,7 +14,7 @@ class CPDCore:
     def __init__(
         self,
         scenario: ScrubberScenario,
-        data: Sequence[float | numpy.float64],
+        data: MutableSequence[float | numpy.float64],
         scrubber: Scrubber,
         algorithm: Algorithm,
         scrubber_data_size: int,
