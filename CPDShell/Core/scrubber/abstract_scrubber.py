@@ -54,7 +54,7 @@ class Scrubber(ABC):
     def add_data(self, new_data: MutableSequence[float | numpy.float64]) -> None:
         """Function for adding new data to Scrubber
 
-        :param new_data: new data to be added to the crubber data"""
+        :param new_data: new data to be added to the scrubber data"""
         for point in new_data:
             self._data.append(point)
 
