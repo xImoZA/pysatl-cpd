@@ -2,8 +2,8 @@ import pytest
 
 from CPDShell.Core.algorithms.graph_algorithm import GraphAlgorithm
 from CPDShell.Core.cpd_core import CPDCore
-from CPDShell.Core.scenario import Scenario
 from CPDShell.Core.scrubber.linear_scrubber import LinearScrubber
+from CPDShell.Core.scrubberscenario import ScrubberScenario
 
 
 def custom_comparison(node1, node2):
@@ -34,7 +34,7 @@ class TestCPDCore:
         ),
     )
     def test_run(self, scenario_param, data, alg_class, alg_param, scrubber_data_size, expected):
-        scenario = Scenario(*scenario_param)
+        scenario = ScrubberScenario(*scenario_param)
         scrubber = LinearScrubber()
         algorithm = alg_class(*alg_param)
 

@@ -11,10 +11,10 @@ from collections.abc import Iterable, Sequence
 
 import numpy
 
-from CPDShell.Core.scenario import Scenario
+from CPDShell.Core.scrubberscenario import ScrubberScenario
 
 
-class AbstractScrubber(ABC):
+class Scrubber(ABC):
     """A scrubber for dividing data into windows
     and subsequent processing of data windows
     by change point detection algorithms
@@ -26,7 +26,7 @@ class AbstractScrubber(ABC):
         by change point detection algorithms
 
         """
-        self._scenario: Scenario | None = None
+        self._scenario: ScrubberScenario | None = None
         self._data: Sequence[float | numpy.float64] = []
         self.is_running = True
         self.change_points: list[int] = []
@@ -46,7 +46,9 @@ class AbstractScrubber(ABC):
 
     @abstractmethod
     def add_change_points(self, window_change_points: list[int]) -> None:
-        """Function for mapping window change points to scrubber data part"""
+        """Function for mapping window change points to scrubber data part
+        :param window_change_points: change points detected on scrubber window
+        """
         raise NotImplementedError
 
     def add_data(self, new_data: Sequence[float | numpy.float64]) -> None:
@@ -54,7 +56,7 @@ class AbstractScrubber(ABC):
         self._data += new_data  # TODO Sequence __add__?
 
     @property
-    def scenario(self) -> Scenario:
+    def scenario(self) -> ScrubberScenario:
         return self._scenario
 
     @scenario.setter

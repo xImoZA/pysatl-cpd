@@ -10,10 +10,10 @@ from collections.abc import Iterable, Sequence
 
 import numpy
 
-from CPDShell.Core.scrubber.abstract_scrubber import AbstractScrubber
+from CPDShell.Core.scrubber.abstract_scrubber import Scrubber
 
 
-class LinearScrubber(AbstractScrubber):
+class LinearScrubber(Scrubber):
     """A linear scrubber for dividing data into windows by moving them through data"""
 
     def __init__(
@@ -40,7 +40,12 @@ class LinearScrubber(AbstractScrubber):
             window_end = self._window_start + self._window_length
             yield self._data[self._window_start : window_end]
             self._window_start += int(self._window_length * self._movement_k)
-        while self._window_start + self._window_length <= len(self._data) and self.is_running:
+        while (
+            self._data
+            and self._window_start == 0
+            or self._window_start + self._window_length <= len(self._data)
+            and self.is_running
+        ):
             window_end = self._window_start + self._window_length
             yield self._data[self._window_start : window_end]
             self._window_start += int(self._window_length * self._movement_k)
@@ -48,10 +53,14 @@ class LinearScrubber(AbstractScrubber):
     def add_change_points(self, window_change_points: list[int]) -> None:
         if self.scenario is None:
             raise ValueError("Scrubber has not scenario")
-        max_change_points = self.scenario.change_point_number
-        change_point_number = max(0, max_change_points - len(self.change_points))
-        if change_point_number == 0:
+        max_change_points = self.scenario.max_change_point_number
+        if max_change_points <= len(self.change_points):
             self.is_running = False
-        self.change_points += list(
-            map(lambda point: self._window_start + point, window_change_points[:change_point_number])
-        )
+        if self.scenario.to_localize:
+            for point in window_change_points[:max_change_points]:
+                if self._window_start + point not in self.change_points:
+                    self.change_points.append(self._window_start + point)
+        else:
+            self.change_points += list(
+                map(lambda point: self._window_start + point, window_change_points[:max_change_points])
+            )

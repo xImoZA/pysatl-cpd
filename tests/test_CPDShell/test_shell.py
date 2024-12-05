@@ -5,9 +5,9 @@ from pathlib import Path
 import pytest
 
 from CPDShell.Core.algorithms.graph_algorithm import GraphAlgorithm
-from CPDShell.Core.scenario import Scenario
-from CPDShell.Core.scrubber.abstract_scrubber import AbstractScrubber
+from CPDShell.Core.scrubber.abstract_scrubber import Scrubber
 from CPDShell.Core.scrubber.linear_scrubber import LinearScrubber
+from CPDShell.Core.scrubberscenario import ScrubberScenario
 from CPDShell.shell import CPContainer, CPDResultsAnalyzer, CPDShell, LabeledCPData
 
 
@@ -18,12 +18,16 @@ def custom_comparison(node1, node2):  # TODO: Remove it everywhere
 
 class TestCPDShell:
     shell_for_setter_getter = CPDShell(
-        Scenario(10, True), [4, 3, 2, 1], cpd_algorithm=GraphAlgorithm(custom_comparison, 4)
+        ScrubberScenario(10, True), [4, 3, 2, 1], cpd_algorithm=GraphAlgorithm(custom_comparison, 4)
     )
-    shell_normal = CPDShell(Scenario(10, True), [1, 2, 3, 4], cpd_algorithm=GraphAlgorithm(custom_comparison, 4))
-    shell_default = CPDShell(Scenario(10, True), [3, 4, 5, 6], cpd_algorithm=GraphAlgorithm(custom_comparison, 4))
+    shell_normal = CPDShell(
+        ScrubberScenario(10, True), [1, 2, 3, 4], cpd_algorithm=GraphAlgorithm(custom_comparison, 4)
+    )
+    shell_default = CPDShell(
+        ScrubberScenario(10, True), [3, 4, 5, 6], cpd_algorithm=GraphAlgorithm(custom_comparison, 4)
+    )
     shell_marked_data = CPDShell(
-        Scenario(10, True),
+        ScrubberScenario(10, True),
         LabeledCPData([1, 2, 3, 4], [4, 5, 6, 7]),
         cpd_algorithm=GraphAlgorithm(custom_comparison, 4),
     )
@@ -52,7 +56,7 @@ class TestCPDShell:
         assert self.shell_for_setter_getter.cpd_core.data_controller.data == [1, 3, 4]
 
     def test_scrubber_setter(self) -> None:
-        class TestNewScrubber(AbstractScrubber):
+        class TestNewScrubber(Scrubber):
             def restart(self) -> None:
                 pass
 
@@ -79,12 +83,12 @@ class TestCPDShell:
         assert self.shell_for_setter_getter.cpd_core.algorithm.threshold == FIVE
 
     def test_scenario_getter_setter(self) -> None:
-        self.shell_for_setter_getter.scenario = Scenario(20, False)
-        assert self.shell_for_setter_getter.cpd_core.scenario == Scenario(20, False)
+        self.shell_for_setter_getter.scenario = ScrubberScenario(20, False)
+        assert self.shell_for_setter_getter.cpd_core.scenario == ScrubberScenario(20, False)
 
     def test_change_scenario(self) -> None:
         self.shell_for_setter_getter.change_scenario(15, True)
-        assert self.shell_for_setter_getter.scenario == Scenario(15, True)
+        assert self.shell_for_setter_getter.scenario == ScrubberScenario(15, True)
 
     def test_run_cpd(self) -> None:
         res_normal = self.shell_normal.run_cpd()

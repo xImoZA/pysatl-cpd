@@ -43,13 +43,13 @@ poetry install
 # import needed CPD algorithm from CPDShell.Core
 from CPDShell.Core.algorithms.graph_algorithm import GraphAlgorithm
 from CPDShell.labeled_data import LabeledCPData
-from CPDShell.Core.scenario import Scenario
+from CPDShell.Core.scrubberscenario import ScrubberScenario
 
 # import shell
 from CPDShell.shell import CPDShell
 
 # make a shell object
-shell = CPDShell(Scenario(10, True), [1] * 100 + [50] * 100 + [100] * 100)
+shell = CPDShell(ScrubberScenario(10, True), [1] * 100 + [50] * 100 + [100] * 100)
 
 # specify CPD algorithm with parametrs
 shell.cpd_algorithm = GraphAlgorithm(lambda a, b: abs(a - b) < 5, 3)

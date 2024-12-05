@@ -1,7 +1,7 @@
 import pytest
 
-from CPDShell.Core.scenario import Scenario
 from CPDShell.Core.scrubber.linear_scrubber import LinearScrubber
+from CPDShell.Core.scrubberscenario import ScrubberScenario
 
 
 class TestLinearScrubber:
@@ -23,7 +23,7 @@ class TestLinearScrubber:
         ),
     )
     def test_generate_window(self, scenario_param, data, window_length, expected_windows):
-        scenario = Scenario(*scenario_param)
+        scenario = ScrubberScenario(*scenario_param)
         scrubber = LinearScrubber(window_length)
         scrubber.scenario = scenario
         scrubber._data = data
@@ -52,7 +52,7 @@ class TestLinearScrubber:
         ),
     )
     def test_add_change_points(self, scenario_param, data, change_points, expected_change_points):
-        scenario = Scenario(*scenario_param)
+        scenario = ScrubberScenario(*scenario_param)
         scrubber = LinearScrubber(100)
         scrubber.scenario = scenario
 

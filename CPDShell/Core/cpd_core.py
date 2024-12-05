@@ -4,8 +4,8 @@ import numpy
 
 from .algorithms.graph_algorithm import Algorithm
 from .data_controller import DataController
-from .scenario import Scenario
-from .scrubber.abstract_scrubber import AbstractScrubber
+from .scrubber.abstract_scrubber import Scrubber
+from .scrubberscenario import ScrubberScenario
 
 
 class CPDCore:
@@ -13,9 +13,9 @@ class CPDCore:
 
     def __init__(
         self,
-        scenario: Scenario,
+        scenario: ScrubberScenario,
         data: Sequence[float | numpy.float64],
-        scrubber: AbstractScrubber,
+        scrubber: Scrubber,
         algorithm: Algorithm,
         scrubber_data_size: int,
     ) -> None:

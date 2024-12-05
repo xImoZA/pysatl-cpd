@@ -46,7 +46,7 @@ knn_cpd = CPDShell(data, knn_algorithm)
 
 knn_cpd.scrubber.window_length = 16
 knn_cpd.scrubber.movement_k = 0.5
-knn_cpd.scenario.change_point_number = 4
+knn_cpd.scenario.max_change_point_number = 4
 
 res_knn = knn_cpd.run_cpd()
 res_knn.visualize(True)
