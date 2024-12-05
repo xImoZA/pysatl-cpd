@@ -6,20 +6,21 @@ __author__ = "Romanyuk Artem"
 __copyright__ = "Copyright (c) 2024 Romanyuk Artem"
 __license__ = "SPDX-License-Identifier: MIT"
 
+import random
+
+import hypothesis.strategies as st
 import pytest
+from hypothesis import given, settings
 
 from CPDShell.Core.data_controller import DataController
 
 
 class TestDataController:
-    @pytest.mark.parametrize(
-        "data,window_length,change_points,data_start_index",
-        (
-            ((1, 2, 3, 4, 5, 6, 7), 5, [1, 2], 1),
-            ((1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), 10, [7], 10),
-        ),
-    )
-    def test_restart(self, data, window_length, change_points, data_start_index):
+    @settings(max_examples=1000)
+    @given(st.integers(0, 100), st.integers(0, 100), st.integers(0, 100), st.integers(0, 100))
+    def test_restart(self, data_len, window_length, change_points_len, data_start_index):
+        data = [random.randint(0, 100) for _ in range(data_len)]
+        change_points = [random.randint(0, 100) for _ in range(change_points_len)]
         data_controller = DataController(data, window_length)
         data_controller.change_points = change_points
         data_controller._data_start_index = data_start_index
@@ -27,37 +28,26 @@ class TestDataController:
         assert data_controller._data_start_index == 0
         assert data_controller.change_points == []
 
-    @pytest.mark.parametrize(
-        "data,window_length,data_start_index,expected_window",
-        (
-            (
-                (1, 2, 3, 4, 5, 6, 7),
-                5,
-                1,
-                (2, 3, 4, 5, 6),
-            ),
-            (
-                (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
-                10,
-                2,
-                (3, 4, 5, 6, 7, 8, 9, 10, 11, 12),
-            ),
-        ),
-    )
-    def test_get_data(self, data, window_length, data_start_index, expected_window):
+    @settings(max_examples=1000)
+    @given(st.integers(1, 100), st.integers(1, 100))
+    def test_get_data(self, data_length, window_length):
+        data = [random.randint(0, 100) for _ in range(data_length)]
+        data_start_index = random.randint(0, data_length)
         data_controller = DataController(data, window_length)
         data_controller._data_start_index = data_start_index
-        assert next(iter(data_controller.get_data())) == expected_window
+        if data_start_index == data_length:
+            with pytest.raises(StopIteration):
+                next(iter(data_controller.get_data()))
+        else:
+            assert next(iter(data_controller.get_data())) == data[data_start_index : data_start_index + window_length]
 
-    @pytest.mark.parametrize(
-        "data,window_length,window_start_index,change_points,expected_change_points",
-        (
-            ((1, 2, 3, 4, 5, 6, 7), 5, 1, [2], [3]),
-            ((1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), 10, 2, [4, 8], [6, 10]),
-        ),
-    )
-    def test_add_change_points(self, data, window_length, window_start_index, change_points, expected_change_points):
+    @settings(max_examples=1000)
+    @given(st.integers(1, 100), st.integers(1, 100), st.integers(1, 100), st.integers(1, 100))
+    def test_add_change_points(self, data_length, window_length, window_start_index, change_points_length):
+        data = [random.randint(0, 100) for _ in range(data_length)]
+        change_points = [random.randint(0, 100) for _ in range(change_points_length)]
+
         data_controller = DataController(data, window_length)
         data_controller._data_start_index = window_start_index
         data_controller.add_change_points(change_points)
-        assert data_controller.change_points == expected_change_points
+        assert data_controller.change_points == list(map(lambda point: point + window_start_index, change_points))
