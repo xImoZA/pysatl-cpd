@@ -43,7 +43,7 @@ poetry install
 # import needed CPD algorithm from CPDShell.Core
 from CPDShell.Core.algorithms.graph_algorithm import GraphAlgorithm
 from CPDShell.labeled_data import LabeledCPData
-from CPDShell.Core.scrubberscenario import ScrubberScenario
+from CPDShell.Core.scrubber_scenario import ScrubberScenario
 
 # import shell
 from CPDShell.shell import CPDShell

@@ -7,11 +7,11 @@ __copyright__ = "Copyright (c) 2024 Romanyuk Artem"
 __license__ = "SPDX-License-Identifier: MIT"
 
 from abc import ABC, abstractmethod
-from collections.abc import Iterable, MutableSequence
+from collections.abc import Iterable, Sequence
 
 import numpy
 
-from CPDShell.Core.scrubberscenario import ScrubberScenario
+from CPDShell.Core.scrubber_scenario import ScrubberScenario
 
 
 class Scrubber(ABC):
@@ -27,7 +27,7 @@ class Scrubber(ABC):
 
         """
         self._scenario: ScrubberScenario | None = None
-        self._data: MutableSequence[float | numpy.float64] = []
+        self._data: Sequence[float | numpy.float64] = []
         self.is_running = True
         self.change_points: list[int] = []
 
@@ -37,7 +37,7 @@ class Scrubber(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_windows(self) -> Iterable[MutableSequence[float | numpy.float64]]:
+    def get_windows(self) -> Iterable[Sequence[float | numpy.float64]]:
         """Function for dividing data into parts to feed into the change point detection algorithm
 
         :return: Iterator of data windows for change point detection algorithm
@@ -51,13 +51,6 @@ class Scrubber(ABC):
         """
         raise NotImplementedError
 
-    def add_data(self, new_data: MutableSequence[float | numpy.float64]) -> None:
-        """Function for adding new data to Scrubber
-
-        :param new_data: new data to be added to the scrubber data"""
-        for point in new_data:
-            self._data.append(point)
-
     @property
     def scenario(self) -> ScrubberScenario:
         return self._scenario
@@ -67,7 +60,7 @@ class Scrubber(ABC):
         self._scenario = new_scenario
 
     @property
-    def data(self) -> MutableSequence[float | numpy.float64]:
+    def data(self) -> Sequence[float | numpy.float64]:
         return self._data
 
     @data.setter

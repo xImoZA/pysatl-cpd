@@ -6,7 +6,7 @@ __author__ = "Romanyuk Artem"
 __copyright__ = "Copyright (c) 2024 Romanyuk Artem"
 __license__ = "SPDX-License-Identifier: MIT"
 
-from collections.abc import Iterable, MutableSequence
+from collections.abc import Iterable, Sequence
 
 import numpy
 
@@ -28,14 +28,15 @@ class LinearScrubber(Scrubber):
         """
         super().__init__()
         self._window_length = window_length
-        self._movement_k = shift_factor
+        self._shift_factor = shift_factor
         self._window_start = 0
+        self._rewrite_data_index: int = 0
 
     def restart(self) -> None:
         self.change_points = []
         self.is_running = True
 
-    def get_windows(self) -> Iterable[MutableSequence[float | numpy.float64]]:
+    def get_windows(self) -> Iterable[Sequence[float | numpy.float64]]:
         while (
             self._data
             and self._window_start == 0
@@ -44,14 +45,12 @@ class LinearScrubber(Scrubber):
         ):
             window_end = self._window_start + self._window_length
             yield self._data[self._window_start : window_end]
-            self._window_start += max(1, int(self._window_length * self._movement_k))
+            self._window_start += max(1, int(self._window_length * self._shift_factor))
 
     def add_change_points(self, window_change_points: list[int]) -> None:
         if self.scenario is None:
             raise ValueError("Scrubber has not ScrubberScenario")
-        max_change_points = self.scenario.max_change_point_number
-        if max_change_points <= len(window_change_points):
-            self.is_running = False
+        max_change_points = self.scenario.max_window_cp_number
         if self.scenario.to_localize:
             for point in window_change_points[:max_change_points]:
                 if self._window_start + point not in self.change_points:

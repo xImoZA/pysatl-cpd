@@ -7,7 +7,7 @@ import pytest
 from CPDShell.Core.algorithms.graph_algorithm import GraphAlgorithm
 from CPDShell.Core.scrubber.abstract_scrubber import Scrubber
 from CPDShell.Core.scrubber.linear_scrubber import LinearScrubber
-from CPDShell.Core.scrubberscenario import ScrubberScenario
+from CPDShell.Core.scrubber_scenario import ScrubberScenario
 from CPDShell.shell import CPContainer, CPDResultsAnalyzer, CPDShell, LabeledCPData
 
 

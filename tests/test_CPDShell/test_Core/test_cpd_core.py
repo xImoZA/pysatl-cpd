@@ -3,7 +3,7 @@ import pytest
 from CPDShell.Core.algorithms.graph_algorithm import GraphAlgorithm
 from CPDShell.Core.cpd_core import CPDCore
 from CPDShell.Core.scrubber.linear_scrubber import LinearScrubber
-from CPDShell.Core.scrubberscenario import ScrubberScenario
+from CPDShell.Core.scrubber_scenario import ScrubberScenario
 
 
 def custom_comparison(node1, node2):

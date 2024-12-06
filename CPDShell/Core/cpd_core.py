@@ -1,11 +1,11 @@
-from collections.abc import MutableSequence
+from collections.abc import Sequence
 
 import numpy
 
 from .algorithms.graph_algorithm import Algorithm
 from .data_controller import DataController
 from .scrubber.abstract_scrubber import Scrubber
-from .scrubberscenario import ScrubberScenario
+from .scrubber_scenario import ScrubberScenario
 
 
 class CPDCore:
@@ -14,7 +14,7 @@ class CPDCore:
     def __init__(
         self,
         scenario: ScrubberScenario,
-        data: MutableSequence[float | numpy.float64],
+        data: Sequence[float | numpy.float64],
         scrubber: Scrubber,
         algorithm: Algorithm,
         scrubber_data_size: int,
