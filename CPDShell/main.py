@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import numpy as np
+
 from CPDShell.Core.algorithms.bayesian_algorithm import BayesianAlgorithm
 from CPDShell.Core.algorithms.BayesianCPD.detectors.drop_detector import DropDetector
 from CPDShell.Core.algorithms.BayesianCPD.detectors.simple_detector import SimpleDetector

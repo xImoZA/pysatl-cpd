@@ -24,7 +24,7 @@ class SimpleDetector(IDetector):
         :param threshold: lower threshold for the maximum run length's probability.
         """
         self._threshold = threshold
-        assert 0.0 <= self._threshold <= 1.0
+        assert 0.0 <= self._threshold <= 1.0, "Threshold must be in [0.0, 1.0]"
 
     def detect(self, growth_probs: np.ndarray) -> bool:
         """

@@ -10,11 +10,11 @@ from collections.abc import Iterable
 
 import numpy as np
 
-from CPDShell.Core.algorithms.abstract_algorithm import Algorithm
 from CPDShell.Core.algorithms.BayesianCPD.abstracts.idetector import IDetector
 from CPDShell.Core.algorithms.BayesianCPD.abstracts.ihazard import IHazard
 from CPDShell.Core.algorithms.BayesianCPD.abstracts.ilikelihood import ILikelihood
 from CPDShell.Core.algorithms.BayesianCPD.abstracts.ilocalizer import ILocalizer
+from CPDShell.Core.algorithms.abstract_algorithm import Algorithm
 
 
 class BayesianAlgorithm(Algorithm):
@@ -110,11 +110,11 @@ class BayesianAlgorithm(Algorithm):
         self.__gap_size = 0
 
         while self.__bayesian_condition(sample_size):
-            assert self.__time >= 0
+            assert self.__time >= 0, "Time must be non-negative"
             observation = sample[self.__time]
             self.__shift_time(1)
             self.__gap_size += 1
-            assert self.__gap_size > 0
+            assert self.__gap_size > 0, "Gap size must be non-negative"
 
             self.__bayesian_update(observation)
 
@@ -131,7 +131,7 @@ class BayesianAlgorithm(Algorithm):
                 self.__change_points.append(self.__time)
             else:
                 run_length = self.__localizer.localize(self.__growth_probs[: self.__gap_size])
-                assert 0 <= run_length <= sample_size
+                assert 0 <= run_length <= sample_size, "Run length must correspond to observations in the given window"
 
                 change_point = self.__time - run_length + 1
                 self.__change_points.append(change_point)
@@ -187,10 +187,12 @@ class BayesianAlgorithm(Algorithm):
         evidence = np.sum(self.__growth_probs[0 : self.__gap_size + 2])
 
         # 7. Renormalize growth probabilities.
-        assert evidence > 0.0
+        assert evidence > 0.0, "Evidence must be > 0.0"
         self.__growth_probs[0 : self.__gap_size + 2] = self.__growth_probs[0 : self.__gap_size + 2] / evidence
 
-        assert np.all(np.logical_and(self.__growth_probs >= 0.0, self.__growth_probs <= 1.0))
+        assert np.all(
+            np.logical_and(self.__growth_probs >= 0.0, self.__growth_probs <= 1.0)
+        ), "Every run length probability must be in [0.0, 1.0]"
 
         # 8. Update parameters of likelihood function for every possible run length (typically appends new values).
         self.__likelihood.update(observation)
