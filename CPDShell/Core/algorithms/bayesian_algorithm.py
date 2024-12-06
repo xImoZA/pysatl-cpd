@@ -10,11 +10,11 @@ from collections.abc import Iterable
 
 import numpy as np
 
+from CPDShell.Core.algorithms.abstract_algorithm import Algorithm
 from CPDShell.Core.algorithms.BayesianCPD.abstracts.idetector import IDetector
 from CPDShell.Core.algorithms.BayesianCPD.abstracts.ihazard import IHazard
 from CPDShell.Core.algorithms.BayesianCPD.abstracts.ilikelihood import ILikelihood
 from CPDShell.Core.algorithms.BayesianCPD.abstracts.ilocalizer import ILocalizer
-from CPDShell.Core.algorithms.abstract_algorithm import Algorithm
 
 
 class BayesianAlgorithm(Algorithm):
