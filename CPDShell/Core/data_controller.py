@@ -38,7 +38,6 @@ class DataController:
 
         :return: data pieces iterator"""
         while self._data_start_index < len(self._data):
-            print(self._data_start_index, len(self._data), self._scrubber_data_size)
             cur_index = self._data_start_index
             yield self._data[cur_index : self._data_start_index + self._scrubber_data_size]
             self._data_start_index += self._scrubber_data_size
