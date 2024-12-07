@@ -15,6 +15,12 @@ from CPDShell.Core.algorithms.BayesianCPD.abstracts.idetector import IDetector
 from CPDShell.Core.algorithms.BayesianCPD.abstracts.ihazard import IHazard
 from CPDShell.Core.algorithms.BayesianCPD.abstracts.ilikelihood import ILikelihood
 from CPDShell.Core.algorithms.BayesianCPD.abstracts.ilocalizer import ILocalizer
+from CPDShell.Core.algorithms.BayesianCPD.detectors.simple_detector import SimpleDetector
+from CPDShell.Core.algorithms.BayesianCPD.hazards.constant_hazard import ConstantHazard
+from CPDShell.Core.algorithms.BayesianCPD.likelihoods.gaussian_unknown_mean_and_variance import (
+    GaussianUnknownMeanAndVariance,
+)
+from CPDShell.Core.algorithms.BayesianCPD.localizers.simple_localizer import SimpleLocalizer
 
 
 class BayesianAlgorithm(Algorithm):
@@ -28,14 +34,20 @@ class BayesianAlgorithm(Algorithm):
     """
 
     def __init__(
-        self, learning_steps: int, likelihood: ILikelihood, hazard: IHazard, detector: IDetector, localizer: ILocalizer
+        self,
+        learning_steps: int = 50,
+        likelihood: ILikelihood = GaussianUnknownMeanAndVariance(),
+        hazard: IHazard = ConstantHazard(rate=1.0 / (1.0 - 0.5 ** (1.0 / 500))),
+        detector: IDetector = SimpleDetector(threshold=0.04),
+        localizer: ILocalizer = SimpleLocalizer(),
     ):
         """
         Initializes a new instance of Bayesian algorithm module with given customization.
         :param learning_steps: number of steps to learn likelihood's parameters.
         :param likelihood: likelihood function for the given model.
-        :param hazard: hazard function for the given model.
+        :param hazard: hazard function for the given model. Default value is calculated for sample size of 500.
         :param detector: detector for change point detection from a run lengths distribution at the moment.
+            Default threshold value was obtained experimentally.
         :param localizer: localizer for change point localization from a run lengths distribution at the moment.
         """
         self._learning_steps = learning_steps
@@ -110,11 +122,11 @@ class BayesianAlgorithm(Algorithm):
         self.__gap_size = 0
 
         while self.__bayesian_condition(sample_size):
-            assert self.__time >= 0, "Time must be non-negative"
+            assert self.__time >= 0
             observation = sample[self.__time]
             self.__shift_time(1)
             self.__gap_size += 1
-            assert self.__gap_size > 0, "Gap size must be non-negative"
+            assert self.__gap_size > 0
 
             self.__bayesian_update(observation)
 
@@ -131,7 +143,7 @@ class BayesianAlgorithm(Algorithm):
                 self.__change_points.append(self.__time)
             else:
                 run_length = self.__localizer.localize(self.__growth_probs[: self.__gap_size])
-                assert 0 <= run_length <= sample_size, "Run length must correspond to observations in the given window"
+                assert 0 <= run_length <= sample_size
 
                 change_point = self.__time - run_length + 1
                 self.__change_points.append(change_point)
@@ -187,12 +199,10 @@ class BayesianAlgorithm(Algorithm):
         evidence = np.sum(self.__growth_probs[0 : self.__gap_size + 2])
 
         # 7. Renormalize growth probabilities.
-        assert evidence > 0.0, "Evidence must be > 0.0"
+        assert evidence > 0.0
         self.__growth_probs[0 : self.__gap_size + 2] = self.__growth_probs[0 : self.__gap_size + 2] / evidence
 
-        assert np.all(
-            np.logical_and(self.__growth_probs >= 0.0, self.__growth_probs <= 1.0)
-        ), "Every run length probability must be in [0.0, 1.0]"
+        assert np.all(np.logical_and(self.__growth_probs >= 0.0, self.__growth_probs <= 1.0))
 
         # 8. Update parameters of likelihood function for every possible run length (typically appends new values).
         self.__likelihood.update(observation)
