@@ -252,7 +252,6 @@ class CPDShell:
             data.raw_data if isinstance(data, LabeledCPData) else data,
             scrubber,
             cpd_algorithm,
-            len(self._data) // 3,
         )
 
     @property

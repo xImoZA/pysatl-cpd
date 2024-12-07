@@ -17,7 +17,7 @@ class CPDCore:
         data: Sequence[float | numpy.float64],
         scrubber: Scrubber,
         algorithm: Algorithm,
-        scrubber_data_size: int,
+        scrubber_data_size: int = 2000,
     ) -> None:
         """Change Point Detection Core
 
@@ -44,8 +44,10 @@ class CPDCore:
         self.scrubber.restart()
         self.data_controller.restart()
         for data in self.data_controller.get_data():
-            self.scrubber._data = data
+            self.scrubber.data = data
+            print("data", len(data), data)
             for window in self.scrubber.get_windows():
+                print(len(window), window)
                 if self.scenario.to_localize:
                     window_change_points = self.algorithm.localize(window)
                 else:

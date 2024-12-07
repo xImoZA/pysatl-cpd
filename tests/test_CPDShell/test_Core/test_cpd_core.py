@@ -21,7 +21,7 @@ class TestCPDCore:
                 GraphAlgorithm,
                 (custom_comparison, 2),
                 10,
-                [6, 16],
+                [6],
             ),
             (
                 (1, False),
@@ -29,7 +29,7 @@ class TestCPDCore:
                 GraphAlgorithm,
                 (custom_comparison, 2),
                 10,
-                [0, 10],
+                [0],
             ),
         ),
     )

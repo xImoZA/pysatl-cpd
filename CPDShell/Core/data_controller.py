@@ -15,7 +15,7 @@ from numpy.random.mtrand import Sequence
 class DataController:
     """Data Controller for dividing big data to smaller windows for Scrubber"""
 
-    def __init__(self, data: Sequence[float | numpy.float64], scrubber_data_size: int) -> None:
+    def __init__(self, data: Sequence[float | numpy.float64], scrubber_data_size: int = 2000) -> None:
         """Data Controller for dividing big data to smaller windows for Scrubber
 
         :param data: values for change point detection
@@ -38,6 +38,7 @@ class DataController:
 
         :return: data pieces iterator"""
         while self._data_start_index < len(self._data):
+            print(self._data_start_index, len(self._data), self._scrubber_data_size)
             cur_index = self._data_start_index
             yield self._data[cur_index : self._data_start_index + self._scrubber_data_size]
             self._data_start_index += self._scrubber_data_size
