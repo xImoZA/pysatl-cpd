@@ -1,5 +1,5 @@
 """
-Module for implementation of svm classifier for cpd.
+Module for implementation of knn classifier for cpd.
 """
 
 __author__ = "Artemii Patov"
@@ -9,22 +9,25 @@ __license__ = "SPDX-License-Identifier: MIT"
 import typing as tp
 
 import numpy as np
-from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
 
 from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.iclassifier import Classifier
 
 
-class SVMClassifier(Classifier):
+class KNNClassifier(Classifier):
     """
-    The class implementing svm classifier for cpd.
+    The class implementing knn classifier for cpd.
     """
 
-    def __init__(self, kernel: tp.Literal["linear", "poly", "rbf", "sigmoid", "precomputed"] = "rbf") -> None:
+    def __init__(
+        self, k: int, distance: tp.Literal["manhattan", "euclidean", "minkowski", "hamming"] = "euclidean"
+    ) -> None:
         """
-        Initializes a new instance of svm classifier for cpd.
+        Initializes a new instance of knn classifier for cpd.
         """
-        self.__kernel: tp.Literal["linear", "poly", "rbf", "sigmoid", "precomputed"] = (kernel,)
-        self.__model: SVC | None = None
+        self.__k = k
+        self.__distance: tp.Literal["manhattan", "euclidean", "minkowski", "hamming"] = distance
+        self.__model: KNeighborsClassifier | None = None
 
     def train(self, sample: list[list[float | np.float64]], barrier: int) -> None:
         """Trains classifier on the given sample.
@@ -33,7 +36,7 @@ class SVMClassifier(Classifier):
         :param barrier: index of observation that splits the given sample.
         """
         classes = [0 if i <= barrier else 1 for i in range(len(sample))]
-        self.__model = SVC(kernel=self.__kernel)
+        self.__model = KNeighborsClassifier(n_neighbors=self.__k, metric=self.__distance)
         self.__model.fit(sample, classes)
 
     def predict(self, sample: list[list[float | np.float64]]) -> np.ndarray:

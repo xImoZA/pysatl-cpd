@@ -1,5 +1,5 @@
 """
-Module for implementation of kmeans classifier for cpd.
+Module for implementation of k-means classifier for cpd.
 """
 
 __author__ = "Artemii Patov"
