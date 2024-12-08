@@ -18,7 +18,7 @@ from CPDShell.Core.algorithms.KNNCPD.knn_classifier import KNNClassifier
 
 class KNNAlgorithm(Algorithm):
     """
-    The class implementing change point detection algorithm based on k-NN classifier.
+    The class implementing change point detection algorithm based on k-NN classifier. Works only with non-constant data.
     """
 
     def __init__(
