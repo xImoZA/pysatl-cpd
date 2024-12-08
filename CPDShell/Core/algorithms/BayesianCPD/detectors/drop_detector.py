@@ -36,7 +36,7 @@ class DropDetector(IDetector):
         if len(growth_probs) == 0:
             return False
 
-        last_growth_prob = growth_probs[len(growth_probs) - 1]
+        last_growth_prob = growth_probs[-1]
         if self.__previous_growth_prob is None:
             self.__previous_growth_prob = last_growth_prob
             return False

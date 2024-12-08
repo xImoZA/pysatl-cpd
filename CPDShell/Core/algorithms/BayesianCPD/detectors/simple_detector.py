@@ -32,7 +32,7 @@ class SimpleDetector(IDetector):
         :param growth_probs: growth probabilities for run lengths at the time.
         :return: boolean indicating whether a changepoint occurred.
         """
-        return len(growth_probs) > 0 and growth_probs[len(growth_probs) - 1] < self._threshold
+        return len(growth_probs) > 0 and growth_probs[-1] < self._threshold
 
     def clear(self) -> None:
         """
