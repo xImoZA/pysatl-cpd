@@ -104,7 +104,9 @@ class ClassificationAlgorithm(Algorithm):
     # Strategy: even elements goes to the train sample; uneven --- to the test sample
     # Soon classification algorithm will be more generalized: the split strategy will be one of the parameters.
     @staticmethod
-    def __split_sample(sample: Iterable[float | np.float64]) -> tuple[list[list[float | np.float64]], list[list[float | np.float64]]]:
+    def __split_sample(
+        sample: Iterable[float | np.float64],
+    ) -> tuple[list[list[float | np.float64]], list[list[float | np.float64]]]:
         train_sample = [[x] for i, x in enumerate(sample) if i % 2 == 0]
         test_sample = [[x] for i, x in enumerate(sample) if i % 2 != 0]
 
