@@ -19,9 +19,7 @@ class KMeansAlgorithm(Classifier):
     The class implementing k-means classifier for cpd.
     """
 
-    def __init__(
-        self,
-    ) -> None:
+    def __init__(self) -> None:
         """
         Initializes a new instance of k-means classifier for cpd.
         """

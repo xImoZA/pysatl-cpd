@@ -30,14 +30,15 @@ class KNNClassifier:
         Initializes a new instance of KNN classifier for cpd.
 
         :param metric: function for calculating distance between points in time series.
-        :param k: number of neighbours in graph relative to each point.
-        :param delta: delta for comparing floats.
+        :param k: number of neighbours in the knn graph relative to each point.
+        Default is 7, which is generally the most optimal value (based on the experiments results).
+        :param delta: delta for comparing float values of the given observations.
         """
         self.__k = k
         self.__metric = metric
         self.__delta = delta
 
-        self.__window: list[float | np.float64] = None
+        self.__window: list[float | np.float64] | None = None
         self.__knn_graph: KNNGraph | None = None
 
     def classify(self, window: Iterable[float | np.float64]) -> None:
@@ -51,7 +52,7 @@ class KNNClassifier:
 
     def assess_barrier(self, time: int) -> float:
         """
-        Calaulates quality function in specified point.
+        Calculates quality function in specified point.
 
         :param time: index of point in the given sample to calculate statistics relative to it.
         """
@@ -66,7 +67,7 @@ class KNNClassifier:
 
         if n <= k:
             # Unable to analyze sample due to its size.
-            # Returns negative number that will be less than statistics in this case,
+            # Returns negative number that will be less than the statistics in this case,
             # but big enough not to spoil visualization.
             return -k
 
@@ -97,11 +98,10 @@ class KNNClassifier:
         random_variable_value = self.__calculate_random_variable(permutation, time, window_size)
 
         if deviation == 0:
-            # if deviation is zero, it likely means that time is 1. This implies that h is 0 and sum_2 = k**2.
-            # In this case we can for sure say that there is no change-point.
-            # Expectation in this case is equal to 4 * k, and random variable less or equal to 2.
-            # Thus returning negative difference of them will be enough not to increase false positive.
-            return -(random_variable_value - expectation)
+            # if the deviation is zero, it likely means that the time is 1 or the data is constant.
+            # In this case we cannot detect any change-points.
+            # Thus we can return negative number that will be less than the statistics in this case.
+            return -k
 
         statistics = -(random_variable_value - expectation) / deviation
 

@@ -15,7 +15,7 @@ class QualityMetric(ABC):
     """Quality metric's abstract base class."""
 
     @abstractmethod
-    def assess_barrier(self, classes: list[float | np.float64], time: int) -> float:
+    def assess_barrier(self, classes: np.ndarray, time: int) -> float:
         """Evaluates quality function based on classificator in the specified point.
 
         :param classes: Classes of observations, predicted by the classifier.

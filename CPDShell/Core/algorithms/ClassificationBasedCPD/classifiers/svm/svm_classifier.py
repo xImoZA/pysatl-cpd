@@ -22,8 +22,9 @@ class SVMClassifier(Classifier):
     def __init__(self, kernel: tp.Literal["linear", "poly", "rbf", "sigmoid", "precomputed"] = "rbf") -> None:
         """
         Initializes a new instance of svm classifier for cpd.
+        :param kernel: specifies the kernel type to be used in the algorithm. If none is given, 'rbf' will be used.
         """
-        self.__kernel: tp.Literal["linear", "poly", "rbf", "sigmoid", "precomputed"] = (kernel,)
+        self.__kernel: tp.Literal["linear", "poly", "rbf", "sigmoid", "precomputed"] = kernel
         self.__model: SVC | None = None
 
     def train(self, sample: list[list[float | np.float64]], barrier: int) -> None:

@@ -17,9 +17,7 @@ class RFClassifier(Classifier):
     The class implementing random forest classifier for cpd.
     """
 
-    def __init__(
-        self,
-    ) -> None:
+    def __init__(self) -> None:
         """
         Initializes a new instance of RF classifier for cpd.
         """

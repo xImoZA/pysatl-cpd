@@ -20,10 +20,13 @@ class KNNClassifier(Classifier):
     """
 
     def __init__(
-        self, k: int, distance: tp.Literal["manhattan", "euclidean", "minkowski", "hamming"] = "euclidean"
+        self, k: int, distance: tp.Literal["manhattan", "euclidean", "minkowski", "hamming"] = "minkowski"
     ) -> None:
         """
         Initializes a new instance of knn classifier for cpd.
+        :param k: number of neighbours in the knn graph relative to each point.
+        :param distance: Metric to use for distance computation.
+        Default is "minkowski", which results in the standard Euclidean distance when p = 2.
         """
         self.__k = k
         self.__distance: tp.Literal["manhattan", "euclidean", "minkowski", "hamming"] = distance

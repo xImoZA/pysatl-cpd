@@ -17,9 +17,7 @@ class DecisionTreeClassifier(Classifier):
     The class implementing decision tree classifier for cpd.
     """
 
-    def __init__(
-        self,
-    ) -> None:
+    def __init__(self) -> None:
         """
         Initializes a new instance of decision tree classifier classifier for cpd.
         """

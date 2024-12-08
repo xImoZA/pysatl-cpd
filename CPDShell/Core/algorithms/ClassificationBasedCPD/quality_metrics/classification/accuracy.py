@@ -6,6 +6,8 @@ __author__ = "Artemii Patov"
 __copyright__ = "Copyright (c) 2024 Artemii Patov"
 __license__ = "SPDX-License-Identifier: MIT"
 
+from numpy import ndarray
+
 from CPDShell.Core.algorithms.ClassificationBasedCPD.abstracts.iquality_metric import QualityMetric
 
 
@@ -14,7 +16,7 @@ class Accuracy(QualityMetric):
     The class implementing quality metric based on accuracy.
     """
 
-    def assess_barrier(self, classes: list[int], time: int) -> float:
+    def assess_barrier(self, classes: ndarray, time: int) -> float:
         """Evaluates quality function based on classificator in the specified point.
 
         :param classes: Classes of observations, predicted by the classifier.

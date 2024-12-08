@@ -18,29 +18,32 @@ from CPDShell.Core.algorithms.KNNCPD.knn_classifier import KNNClassifier
 
 class KNNAlgorithm(Algorithm):
     """
-    The class implementing change point detection algorithm based on classification.
+    The class implementing change point detection algorithm based on k-NN classifier.
     """
 
     def __init__(
         self,
-        distanceFunc: tp.Callable[[float, float], float] | tp.Callable[[np.float64, np.float64], float],
+        distance_func: tp.Callable[[float, float], float] | tp.Callable[[np.float64, np.float64], float],
         test_statistic: TestStatistic,
         indent_coeff: float,
         k=7,
         delta: float = 1e-12,
     ) -> None:
         """
-        Initializes a new instance of classification based change point detection algorithm.
+        Initializes a new instance of k-NN based change point detection algorithm.
 
-        :param classifier: Classifier for sample classification.
+        :param distance_func: function for calculating the distance between two points in time series.
         :param test_statistic: Criterion to separate change points from other points in sample.
         :param indent_coeff: Coefficient for evaluating indent from window borders.
         The indentation is calculated by multiplying the given coefficient by the size of window.
+        :param k: number of neighbours in the knn graph relative to each point.
+        Default is 7, which is generally the most optimal value (based on the experiments results).
+        :param delta: delta for comparing float values of the given observations.
         """
         self.__test_statistic = test_statistic
 
         self.__shift_coeff = indent_coeff
-        self.__classifier = KNNClassifier(distanceFunc, k, delta)
+        self.__classifier = KNNClassifier(distance_func, k, delta)
 
         self.__change_points: list[int] = []
         self.__change_points_count = 0

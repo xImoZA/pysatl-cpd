@@ -17,9 +17,7 @@ class LogisticRegressionClassifier(Classifier):
     The class implementing classifier based on logistic regression for cpd.
     """
 
-    def __init__(
-        self,
-    ) -> None:
+    def __init__(self) -> None:
         """
         Initializes a new instance of classifier based on logistic regression for cpd.
         """
