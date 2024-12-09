@@ -35,6 +35,7 @@ class LinearScrubber(Scrubber):
     def restart(self) -> None:
         self.change_points = []
         self.is_running = True
+        self._window_start = 0
 
     def get_windows(self) -> Iterable[Sequence[float | numpy.float64]]:
         while (

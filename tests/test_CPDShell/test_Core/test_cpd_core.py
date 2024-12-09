@@ -7,7 +7,7 @@ from CPDShell.Core.scrubber_scenario import ScrubberScenario
 
 
 def custom_comparison(node1, node2):
-    arg = 1
+    arg = 5
     return abs(node1 - node2) <= arg
 
 
@@ -17,18 +17,18 @@ class TestCPDCore:
         (
             (
                 (1, True),
-                (1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100, 100, 100),
+                (50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50),
                 GraphAlgorithm,
-                (custom_comparison, 2),
-                10,
-                [6],
+                (custom_comparison, 1.5),
+                100,
+                [5],
             ),
             (
                 (1, False),
-                (1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100, 100, 100),
+                (50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50),
                 GraphAlgorithm,
-                (custom_comparison, 2),
-                10,
+                (custom_comparison, 1.5),
+                100,
                 [0],
             ),
         ),
