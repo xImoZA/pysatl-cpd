@@ -17,17 +17,12 @@ def custom_comparison(node1, node2):  # TODO: Remove it everywhere
 
 
 class TestCPDShell:
-    shell_for_setter_getter = CPDShell(
-        ScrubberScenario(10, True), [4, 3, 2, 1], cpd_algorithm=GraphAlgorithm(custom_comparison, 4)
-    )
-    shell_normal = CPDShell(
-        ScrubberScenario(10, True), [1, 2, 3, 4], cpd_algorithm=GraphAlgorithm(custom_comparison, 4)
-    )
+    shell_for_setter_getter = CPDShell([4, 3, 2, 1], cpd_algorithm=GraphAlgorithm(custom_comparison, 4))
+    shell_normal = CPDShell([1, 2, 3, 4], cpd_algorithm=GraphAlgorithm(custom_comparison, 4))
     shell_default = CPDShell(
-        ScrubberScenario(10, True), [3, 4, 5, 6], cpd_algorithm=GraphAlgorithm(custom_comparison, 4)
+        [3, 4, 5, 6], ScrubberScenario(10, True), cpd_algorithm=GraphAlgorithm(custom_comparison, 4)
     )
     shell_marked_data = CPDShell(
-        ScrubberScenario(10, True),
         LabeledCPData([1, 2, 3, 4], [4, 5, 6, 7]),
         cpd_algorithm=GraphAlgorithm(custom_comparison, 4),
     )
@@ -83,8 +78,10 @@ class TestCPDShell:
         assert self.shell_for_setter_getter.cpd_core.algorithm.threshold == FIVE
 
     def test_scenario_getter_setter(self) -> None:
-        self.shell_for_setter_getter.scenario = ScrubberScenario(20, False)
-        assert self.shell_for_setter_getter.cpd_core.scenario == ScrubberScenario(20, False)
+        assert self.shell_for_setter_getter.scenario.max_window_cp_number == float("inf")
+        assert not self.shell_for_setter_getter.scenario.to_localize
+        self.shell_for_setter_getter.scenario = ScrubberScenario(20, True)
+        assert self.shell_for_setter_getter.cpd_core.scenario == ScrubberScenario(20, True)
 
     def test_change_scenario(self) -> None:
         self.shell_for_setter_getter.change_scenario(15, True)

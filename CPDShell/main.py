@@ -42,7 +42,7 @@ K = 5
 KNN_THRESHOLD = 3.5
 
 knn_algorithm = KNNAlgorithm(metric, K, KNN_THRESHOLD)
-knn_cpd = CPDShell(data, knn_algorithm)
+knn_cpd = CPDShell(data, cpd_algorithm=knn_algorithm)
 
 knn_cpd.scrubber.window_length = 16
 knn_cpd.scrubber.movement_k = 0.5
@@ -79,7 +79,7 @@ bayesian_algorithm = BayesianAlgorithm(
     localizer=simple_localizer,
 )
 
-bayesian_cpd = CPDShell(data, bayesian_algorithm)
+bayesian_cpd = CPDShell(data, cpd_algorithm=bayesian_algorithm)
 bayesian_cpd.scrubber.window_length = 500
 bayesian_cpd.scrubber.movement_k = 2.0 / 3.0
 

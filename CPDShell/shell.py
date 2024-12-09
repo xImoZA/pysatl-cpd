@@ -1,7 +1,6 @@
 import time
 from collections.abc import Iterable, MutableSequence
 from pathlib import Path
-from typing import Optional
 
 import numpy
 from matplotlib import pyplot as plt
@@ -176,7 +175,7 @@ class CPDResultsAnalyzer:
     @staticmethod
     def count_accuracy(
         result1: list[int | float], result2: list[int | float], window: tuple[int, int] | None = None
-    ) -> float:  # TODO: dont forget to write tests
+    ) -> float:
         """static method for counting accuracy metric for hypothesis of equality of change points on a window
 
         :param: result1: first array or list of change points, determined as prediction
@@ -231,10 +230,10 @@ class CPDShell:
 
     def __init__(
         self,
-        scenario: ScrubberScenario,
         data: Iterable[float | numpy.float64] | LabeledCPData,
-        cpd_algorithm: Optional["Algorithm"] = None,
-        scrubber: Scrubber = LinearScrubber(),
+        scenario: ScrubberScenario | None = None,
+        cpd_algorithm: Algorithm | None = None,
+        scrubber: Scrubber | None = None,
     ) -> None:
         """CPDShell object constructor
 
@@ -248,9 +247,9 @@ class CPDShell:
             cpd_algorithm if cpd_algorithm is not None else GraphAlgorithm(lambda a, b: abs(a - b) <= arg, 2)
         )
         self.cpd_core: CPDCore = CPDCore(
-            scenario,
+            ScrubberScenario() if scenario is None else scenario,
             data.raw_data if isinstance(data, LabeledCPData) else data,
-            scrubber,
+            LinearScrubber() if scrubber is None else scrubber,
             cpd_algorithm,
         )
 
