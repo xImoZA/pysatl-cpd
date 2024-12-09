@@ -59,10 +59,6 @@ class LinearScrubber(Scrubber):
             self.change_points += list(
                 map(
                     lambda point: self._window_start + point,
-                    (
-                        window_change_points[:max_change_points]
-                        if max_change_points != float("inf")
-                        else window_change_points
-                    ),
+                    (window_change_points[:max_change_points]),
                 )
             )

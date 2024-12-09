@@ -9,5 +9,5 @@ class ScrubberScenario:
     :param to_localize: is it necessary to localize change points, defaults to False
     """
 
-    max_window_cp_number: int | float = float("inf")
+    max_window_cp_number: int = 10**9
     to_localize: bool = False
