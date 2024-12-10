@@ -91,7 +91,7 @@ class ClassificationAlgorithm(Algorithm):
             self.__classifier.train(train_sample, int(time / 2))
             classes = self.__classifier.predict(test_sample)
 
-            quality = self.__quality_metric.assess_barrier(classes, time / 2)
+            quality = self.__quality_metric.assess_barrier(classes, int(time / 2))
             assessments.append(quality)
 
         change_points = self.__test_statistic.get_change_points(assessments)
