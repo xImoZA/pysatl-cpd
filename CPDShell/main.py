@@ -47,7 +47,7 @@ statistic = ThresholdOvercome(KNN_THRESHOLD)
 knn_algorithm = KNNAlgorithm(metric, statistic, OFFSET_COEFF, K)
 knn_cpd = CPDShell(data, knn_algorithm)
 
-knn_cpd.scrubber.window_length = 16
+knn_cpd.scrubber.window_length = 32
 knn_cpd.scrubber.movement_k = 0.5
 knn_cpd.scenario.change_point_number = 100
 
