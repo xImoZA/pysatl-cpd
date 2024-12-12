@@ -8,9 +8,9 @@ from CPDShell.Core.algorithms.BayesianCPD.likelihoods.gaussian_unknown_mean_and_
     GaussianUnknownMeanAndVariance,
 )
 from CPDShell.Core.algorithms.BayesianCPD.localizers.simple_localizer import SimpleLocalizer
-from CPDShell.Core.scrubber.linear_scrubber import LinearScrubber
 from CPDShell.Core.algorithms.ClassificationBasedCPD.test_statistics.threshold_overcome import ThresholdOvercome
 from CPDShell.Core.algorithms.knn_algorithm import KNNAlgorithm
+from CPDShell.Core.scrubber.linear_scrubber import LinearScrubber
 from CPDShell.generator.generator import ScipyDatasetGenerator
 from CPDShell.generator.saver import DatasetSaver
 from CPDShell.shell import CPDShell
