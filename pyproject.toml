@@ -12,6 +12,7 @@ python = "^3.12"
 numpy = "^2.0.0"
 scipy = "^1.14.0"
 matplotlib = "^3.9.1"
+PyQt5 = "^5.15.11"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -22,6 +23,7 @@ ruff = "^0.5.2"
 pre-commit = "^3.7.1"
 pyyaml = "^6.0.1"
 matplotlib = "^3.9.1"
+hypothesis = "^6.122.1"
 
 
 [tool.black]
