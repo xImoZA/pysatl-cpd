@@ -8,6 +8,7 @@ from CPDShell.Core.algorithms.BayesianCPD.likelihoods.gaussian_unknown_mean_and_
     GaussianUnknownMeanAndVariance,
 )
 from CPDShell.Core.algorithms.BayesianCPD.localizers.simple_localizer import SimpleLocalizer
+from CPDShell.Core.scrubber.linear_scrubber import LinearScrubber
 from CPDShell.Core.algorithms.ClassificationBasedCPD.test_statistics.threshold_overcome import ThresholdOvercome
 from CPDShell.Core.algorithms.knn_algorithm import KNNAlgorithm
 from CPDShell.generator.generator import ScipyDatasetGenerator
@@ -39,17 +40,17 @@ def metric(obs1: float, obs2: float) -> float:
     return abs(obs1 - obs2)
 
 
-K = 5
-KNN_THRESHOLD = 3.5
-OFFSET_COEFF = 0.25
+K = 7
+THRESHOLD = 2.5
+WINDOW_SIZE = 48
+MOVEMENT_COEFF = 0.5
+INDENT_COEFF = 0.25
+CHANGE_POINT_NUMBER = 40
 
-statistic = ThresholdOvercome(KNN_THRESHOLD)
-knn_algorithm = KNNAlgorithm(metric, statistic, OFFSET_COEFF, K)
-knn_cpd = CPDShell(data, knn_algorithm)
-
-knn_cpd.scrubber.window_length = 32
-knn_cpd.scrubber.movement_k = 0.5
-knn_cpd.scenario.change_point_number = 100
+statistic = ThresholdOvercome(THRESHOLD)
+knn_algorithm = KNNAlgorithm(metric, statistic, INDENT_COEFF, K)
+scrubber = LinearScrubber(WINDOW_SIZE, MOVEMENT_COEFF)
+knn_cpd = CPDShell(data, cpd_algorithm=knn_algorithm, scrubber=scrubber)
 
 res_knn = knn_cpd.run_cpd()
 res_knn.visualize(True)
@@ -82,7 +83,7 @@ bayesian_algorithm = BayesianAlgorithm(
     localizer=simple_localizer,
 )
 
-bayesian_cpd = CPDShell(data, bayesian_algorithm)
+bayesian_cpd = CPDShell(data, cpd_algorithm=bayesian_algorithm)
 bayesian_cpd.scrubber.window_length = 500
 bayesian_cpd.scrubber.movement_k = 2.0 / 3.0
 
