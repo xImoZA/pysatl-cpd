@@ -224,7 +224,7 @@ class CPDResultsAnalyzer:
         return tp / (tp + fn)
 
 
-class CPDShell:
+class CPDProblem:
     """Class, that grants a convenient interface to
     work with CPD algorithms"""
 
