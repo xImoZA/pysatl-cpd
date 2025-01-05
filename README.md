@@ -51,10 +51,10 @@ from CPDShell.labeled_data import LabeledCPData
 from CPDShell.Core.scrubber_scenario import ScrubberScenario
 
 # import shell
-from CPDShell.shell import CPDShell
+from CPDShell.shell import CPDProblem
 
 # make a shell object
-shell = CPDShell(ScrubberScenario(10, True), [1] * 100 + [50] * 100 + [100] * 100)
+shell = CPDProblem(ScrubberScenario(10, True), [1] * 100 + [50] * 100 + [100] * 100)
 
 # specify CPD algorithm with parametrs
 shell.cpd_algorithm = GraphAlgorithm(lambda a, b: abs(a - b) < 5, 3)

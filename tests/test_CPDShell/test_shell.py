@@ -8,7 +8,7 @@ from CPDShell.Core.algorithms.graph_algorithm import GraphAlgorithm
 from CPDShell.Core.scrubber.abstract_scrubber import Scrubber
 from CPDShell.Core.scrubber.linear_scrubber import LinearScrubber
 from CPDShell.Core.scrubber_scenario import ScrubberScenario
-from CPDShell.shell import CPContainer, CPDResultsAnalyzer, CPDShell, LabeledCPData
+from CPDShell.shell import CPContainer, CPDProblem, CPDResultsAnalyzer, LabeledCPData
 
 
 def custom_comparison(node1, node2):  # TODO: Remove it everywhere
@@ -17,12 +17,12 @@ def custom_comparison(node1, node2):  # TODO: Remove it everywhere
 
 
 class TestCPDShell:
-    shell_for_setter_getter = CPDShell([4, 3, 2, 1], cpd_algorithm=GraphAlgorithm(custom_comparison, 4))
-    shell_normal = CPDShell([1, 2, 3, 4], cpd_algorithm=GraphAlgorithm(custom_comparison, 4))
-    shell_default = CPDShell(
+    shell_for_setter_getter = CPDProblem([4, 3, 2, 1], cpd_algorithm=GraphAlgorithm(custom_comparison, 4))
+    shell_normal = CPDProblem([1, 2, 3, 4], cpd_algorithm=GraphAlgorithm(custom_comparison, 4))
+    shell_default = CPDProblem(
         [3, 4, 5, 6], ScrubberScenario(10, True), cpd_algorithm=GraphAlgorithm(custom_comparison, 4)
     )
-    shell_marked_data = CPDShell(
+    shell_marked_data = CPDProblem(
         LabeledCPData([1, 2, 3, 4], [4, 5, 6, 7]),
         cpd_algorithm=GraphAlgorithm(custom_comparison, 4),
     )
