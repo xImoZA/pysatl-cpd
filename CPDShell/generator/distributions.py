@@ -11,6 +11,7 @@ class Distributions(Enum):
     WEIBULL = "weibull"
     UNIFORM = "uniform"
     BETA = "beta"
+    GAMMA = "gamma"
 
     def __str__(self):
         return self.value
@@ -49,6 +50,8 @@ class Distribution(Protocol):
                 return UniformDistribution.from_params(params)
             case Distributions.BETA.value:
                 return BetaDistribution.from_params(params)
+            case Distributions.GAMMA.value:
+                return GammaDistribution.from_params(params)
             case _:
                 raise NotImplementedError()
 
@@ -285,3 +288,48 @@ class BetaDistribution(ScipyDistribution):
         if alpha <= 0 or beta <= 0:
             raise ValueError("Alpha and beta must be greater than zero")
         return BetaDistribution(alpha, beta)
+
+
+class GammaDistribution(ScipyDistribution):
+    """
+    Description of gamma distribution with shape and scale parameters.
+    """
+
+    ALPHA_KEY: Final[str] = "alpha"
+    BETA_KEY: Final[str] = "beta"
+
+    alpha: float
+    beta: float
+
+    def __init__(self, alpha_value: float, beta_value: float):
+        if alpha_value <= 0 or beta_value <= 0:
+            raise ValueError("Alpha and beta must be greater than zero")
+        self.alpha = alpha_value
+        self.beta = beta_value
+
+    @property
+    def name(self) -> str:
+        return str(Distributions.GAMMA)
+
+    @property
+    def params(self) -> dict[str, str]:
+        return {
+            GammaDistribution.ALPHA_KEY: str(self.alpha),
+            GammaDistribution.BETA_KEY: str(self.beta),
+        }
+
+    def scipy_sample(self, length: int) -> np.ndarray:
+        return ss.gamma(a=self.alpha, scale=1 / self.beta).rvs(size=length)
+
+    @staticmethod
+    def from_params(params: dict[str, str]) -> "GammaDistribution":
+        num_params = 2
+        if len(params) != num_params:
+            raise ValueError(
+                f"Gamma  must have 2 parameters: {GammaDistribution.ALPHA_KEY}, {GammaDistribution.BETA_KEY}"
+            )
+        alpha = float(params[GammaDistribution.ALPHA_KEY])
+        beta = float(params[GammaDistribution.BETA_KEY])
+        if alpha <= 0 or beta <= 0:
+            raise ValueError("Alpha and beta for gamma distributions must be greater than zero")
+        return GammaDistribution(alpha, beta)
