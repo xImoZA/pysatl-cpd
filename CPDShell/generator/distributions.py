@@ -233,13 +233,13 @@ class UniformDistribution(ScipyDistribution):
         if len(params) != num_params:
             raise ValueError(
                 "Uniform distribution must have 2 parameters: "
-                + f"{UniformDistribution.min}"
-                + f"{UniformDistribution.max}"
+                + f"{UniformDistribution.MIN_KEY}"
+                + f"{UniformDistribution.MAX_KEY}"
             )
         min_value: float = float(params[UniformDistribution.MIN_KEY])
         max_value: float = float(params[UniformDistribution.MAX_KEY])
         if min_value >= max_value:
-            raise "Max must be greater than min value"
+            raise ValueError("Max must be greater than min value")
         return UniformDistribution(min_value, max_value)
 
 
