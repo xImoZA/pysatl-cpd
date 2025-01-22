@@ -381,7 +381,7 @@ class LogNormDistribution(ScipyDistribution):
     s: float
 
     def __init__(self, s_value: float) -> None:
-        if self.s <= 0:
+        if s_value <= 0:
             raise ValueError("S parameter must be positive number")
         self.s = s_value
 
