@@ -12,6 +12,8 @@ class Distributions(Enum):
     UNIFORM = "uniform"
     BETA = "beta"
     GAMMA = "gamma"
+    T = "t"
+    LOGNORM = "lognorm"
 
     def __str__(self):
         return self.value
@@ -39,21 +41,17 @@ class Distribution(Protocol):
 
     @staticmethod
     def from_str(name: str, params: dict[str, str]) -> "Distribution":
-        match name:
-            case Distributions.NORMAL.value:
-                return NormalDistribution.from_params(params)
-            case Distributions.EXPONENTIAL.value:
-                return ExponentialDistribution.from_params(params)
-            case Distributions.WEIBULL.value:
-                return WeibullDistribution.from_params(params)
-            case Distributions.UNIFORM.value:
-                return UniformDistribution.from_params(params)
-            case Distributions.BETA.value:
-                return BetaDistribution.from_params(params)
-            case Distributions.GAMMA.value:
-                return GammaDistribution.from_params(params)
-            case _:
-                raise NotImplementedError()
+        distributions = {
+            Distributions.NORMAL.value: NormalDistribution,
+            Distributions.EXPONENTIAL.value: ExponentialDistribution,
+            Distributions.WEIBULL.value: WeibullDistribution,
+            Distributions.UNIFORM.value: UniformDistribution,
+            Distributions.BETA.value: BetaDistribution,
+            Distributions.GAMMA.value: GammaDistribution,
+            Distributions.T.value: TDistribution,
+            Distributions.LOGNORM.value: LogNormDistribution,
+        }
+        return distributions[name].from_params(params)
 
 
 class ScipyDistribution(Distribution):
@@ -333,3 +331,77 @@ class GammaDistribution(ScipyDistribution):
         if alpha <= 0 or beta <= 0:
             raise ValueError("Alpha and beta for gamma distributions must be greater than zero")
         return GammaDistribution(alpha, beta)
+
+
+class TDistribution(ScipyDistribution):
+    """
+    Description of Student's t-distribution with the degrees of freedom parameter.
+    """
+
+    N_KEY: Final[str] = "n"
+
+    n: int
+
+    def __init__(self, n_value: int) -> None:
+        if n_value <= 0:
+            raise ValueError("Degrees of freedom must be positive integer number")
+        self.n = n_value
+
+    @property
+    def name(self) -> str:
+        return str(Distributions.T)
+
+    @property
+    def params(self) -> dict[str, str]:
+        return {
+            TDistribution.N_KEY: str(self.n),
+        }
+
+    def scipy_sample(self, length: int) -> np.ndarray:
+        return ss.t(df=self.n).rvs(size=length)
+
+    @staticmethod
+    def from_params(params: dict[str, str]) -> "TDistribution":
+        num_params = 1
+        if len(params) != num_params:
+            raise ValueError(f"Student's distribution must have 1 parameter: {TDistribution.N_KEY}")
+        n = int(params[TDistribution.N_KEY])
+        if n <= 0:
+            raise ValueError("n (degrees of freedom) must be positive integer")
+        return TDistribution(n)
+
+
+class LogNormDistribution(ScipyDistribution):
+    """
+    Description of log normal distributionn with one parameter
+    """
+
+    S_KEY: Final[str] = "s"
+
+    s: float
+
+    def __init__(self, s_value: float) -> None:
+        if self.s <= 0:
+            raise ValueError("S parameter must be positive number")
+        self.s = s_value
+
+    @property
+    def name(self) -> str:
+        return str(Distributions.LOGNORM)
+
+    @property
+    def params(self) -> dict[str, str]:
+        return {
+            LogNormDistribution.S_KEY: str(self.s),
+        }
+
+    def scipy_sample(self, length: int) -> np.ndarray:
+        return ss.lognorm(s=self.s).rvs(size=length)
+
+    @staticmethod
+    def from_params(params: dict[str, str]) -> "LogNormDistribution":
+        num_params = 1
+        if len(params) != num_params:
+            raise ValueError(f"Log normal distribution must have 1 parameter: {LogNormDistribution.S_KEY}")
+        s = float(params[LogNormDistribution.S_KEY])
+        return LogNormDistribution(s)
