@@ -42,6 +42,10 @@ class TestDistributions:
             (dstr.Distributions.LOGNORM, {"S": "1"}, KeyError),
             (dstr.Distributions.LOGNORM, {"s": "1", "x": "5"}, ValueError),
             (dstr.Distributions.LOGNORM, {"s": "-1"}, ValueError),
+            (dstr.Distributions.MULTIVARIATIVE_NORMAL, {}, ValueError),
+            (dstr.Distributions.MULTIVARIATIVE_NORMAL, {"Mean": "[0.0, 0.0]"}, KeyError),
+            (dstr.Distributions.MULTIVARIATIVE_NORMAL, {"mean": "[0.0, 0.0]", "x": "5"}, ValueError),
+            (dstr.Distributions.MULTIVARIATIVE_NORMAL, {"mean": "[]"}, ValueError),
         ],
     )
     def test_distribution_params_validation_fail(self, distribution, params, error):
@@ -50,3 +54,23 @@ class TestDistributions:
             d = dstr.Distribution.from_str(str(distribution), params)
             assert isinstance(d, dstr.ScipyDistribution)
             assert len(d.scipy_sample(sample_len)) == sample_len
+
+    @pytest.mark.parametrize(
+        "distribution, params",
+        [
+            (dstr.Distributions.NORMAL, {"mean": "0", "variance": "1"}),
+            (dstr.Distributions.EXPONENTIAL, {"rate": "1"}),
+            (dstr.Distributions.WEIBULL, {"shape": "1", "scale": "1"}),
+            (dstr.Distributions.UNIFORM, {"min": "0", "max": "1"}),
+            (dstr.Distributions.BETA, {"alpha": "1", "beta": "1"}),
+            (dstr.Distributions.GAMMA, {"alpha": "1", "beta": "1"}),
+            (dstr.Distributions.T, {"n": "1"}),
+            (dstr.Distributions.LOGNORM, {"s": "1"}),
+            (dstr.Distributions.MULTIVARIATIVE_NORMAL, {"mean": "[0.0, 0.1]"}),
+        ],
+    )
+    def test_distribution_generate(self, distribution, params):
+        sample_len = 100
+        d = dstr.Distribution.from_str(str(distribution), params)
+        assert isinstance(d, dstr.ScipyDistribution)
+        assert len(d.scipy_sample(sample_len)) == sample_len
