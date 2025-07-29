@@ -1,3 +1,11 @@
+"""
+Module for parsing and validating YAML configuration files for dataset generation.
+"""
+
+__author__ = "Romanyuk Artem, Vladimir Kutuev"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
 import os.path
 from collections.abc import Iterator
 from pathlib import Path

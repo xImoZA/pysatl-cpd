@@ -15,10 +15,7 @@ import numpy as np
 import numpy.typing as npt
 from scipy import stats
 
-from pysatl_cpd.core.algorithms.bayesian.abstracts.ilikelihood import (
-    ILikelihood,
-    ILikelihoodWithPriorProbability,
-)
+from pysatl_cpd.core.algorithms.bayesian.abstracts import ILikelihood, ILikelihoodWithPriorProbability
 
 
 class GaussianConjugate(ILikelihood):

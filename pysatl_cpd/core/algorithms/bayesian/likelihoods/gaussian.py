@@ -12,7 +12,7 @@ import numpy.typing as npt
 from scipy import stats
 from typing_extensions import deprecated
 
-from pysatl_cpd.core.algorithms.bayesian.abstracts.ilikelihood import ILikelihood
+from pysatl_cpd.core.algorithms.bayesian.abstracts import ILikelihood
 
 
 @deprecated("Use GaussianConjugate instead")

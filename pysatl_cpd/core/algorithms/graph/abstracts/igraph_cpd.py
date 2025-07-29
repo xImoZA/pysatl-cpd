@@ -1,3 +1,12 @@
+"""
+Module containing interface for graph-based change point detection algorithms.
+"""
+
+__author__ = "Temerlan Akhmetov "
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
+
 from abc import ABC, abstractmethod
 
 from pysatl_cpd.core.algorithms.graph.abstracts.igraph import IGraph

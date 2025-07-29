@@ -12,10 +12,10 @@ import numpy as np
 import numpy.typing as npt
 from sklearn.svm import SVC
 
-from pysatl_cpd.core.algorithms.classification.abstracts.iclassifier import Classifier
+from pysatl_cpd.core.algorithms.classification.abstracts import IClassifier
 
 
-class SVMClassifier(Classifier):
+class SVMClassifier(IClassifier):
     """
     The class implementing svm classifier for cpd.
     """

@@ -13,8 +13,7 @@ from pathlib import Path
 import numpy as np
 import numpy.typing as npt
 
-from pysatl_cpd.generator.generator import DatasetGenerator, ScipyDatasetGenerator
-from pysatl_cpd.generator.saver import DatasetSaver
+from pysatl_cpd.generator import DatasetGenerator, DatasetSaver, ScipyDatasetGenerator
 
 
 class LabeledCpdData:

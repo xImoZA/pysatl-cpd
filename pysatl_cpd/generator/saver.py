@@ -1,3 +1,11 @@
+"""
+Module for saving generated datasets with their descriptions, changepoints and visualizations.
+"""
+
+__author__ = "Artem Romanyuk, Vladimir Kutuev"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
 from pathlib import Path
 from typing import Final
 

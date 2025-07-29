@@ -12,9 +12,7 @@ import numpy as np
 import numpy.typing as npt
 
 from pysatl_cpd.core.algorithms.abstract_algorithm import Algorithm
-from pysatl_cpd.core.algorithms.classification.abstracts.istatistic_test import (
-    TestStatistic,
-)
+from pysatl_cpd.core.algorithms.classification.abstracts import ITestStatistic
 from pysatl_cpd.core.algorithms.knn.classifier import KNNClassifier
 
 
@@ -32,7 +30,7 @@ class KNNAlgorithm(Algorithm):
             ],
             float,
         ],
-        test_statistic: TestStatistic,
+        test_statistic: ITestStatistic,
         indent_coeff: float,
         k: int = 7,
         delta: float = 1e-12,
@@ -57,11 +55,11 @@ class KNNAlgorithm(Algorithm):
         self.__change_points_count = 0
 
     @property
-    def test_statistic(self) -> TestStatistic:
+    def test_statistic(self) -> ITestStatistic:
         return self.__test_statistic
 
     @test_statistic.setter
-    def test_statistic(self, test_statistic: TestStatistic) -> None:
+    def test_statistic(self, test_statistic: ITestStatistic) -> None:
         self.__test_statistic = test_statistic
 
     def detect(self, window: npt.NDArray[np.float64]) -> int:

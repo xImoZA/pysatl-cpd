@@ -11,7 +11,7 @@ __license__ = "SPDX-License-Identifier: MIT"
 import numpy as np
 import numpy.typing as npt
 
-from pysatl_cpd.core.algorithms.bayesian.abstracts.idetector import IDetector
+from pysatl_cpd.core.algorithms.bayesian.abstracts import IDetector
 
 
 class ThresholdDetector(IDetector):

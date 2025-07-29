@@ -14,7 +14,7 @@ import numpy as np
 import numpy.typing as npt
 from matplotlib import pyplot as plt
 
-from pysatl_cpd.analysis.results_analyzer import CpdResultsAnalyzer
+from pysatl_cpd.analysis import CpdResultsAnalyzer
 
 
 class CpdLocalizationResults:

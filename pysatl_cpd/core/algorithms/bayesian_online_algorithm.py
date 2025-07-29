@@ -11,10 +11,7 @@ from typing import Optional
 import numpy as np
 import numpy.typing as npt
 
-from pysatl_cpd.core.algorithms.bayesian.abstracts.idetector import IDetector
-from pysatl_cpd.core.algorithms.bayesian.abstracts.ihazard import IHazard
-from pysatl_cpd.core.algorithms.bayesian.abstracts.ilikelihood import ILikelihood
-from pysatl_cpd.core.algorithms.bayesian.abstracts.ilocalizer import ILocalizer
+from pysatl_cpd.core.algorithms.bayesian.abstracts import IDetector, IHazard, ILikelihood, ILocalizer
 from pysatl_cpd.core.algorithms.online_algorithm import OnlineAlgorithm
 
 

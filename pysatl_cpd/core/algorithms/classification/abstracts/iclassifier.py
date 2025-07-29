@@ -12,7 +12,7 @@ import numpy as np
 import numpy.typing as npt
 
 
-class Classifier(ABC):
+class IClassifier(ABC):
     """Classifier's abstract base class."""
 
     @abstractmethod

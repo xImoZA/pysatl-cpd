@@ -1,9 +1,14 @@
+"""
+Module contains core change point detection functionality
+combining scrubbers and detection algorithms.
+"""
+
 __author__ = "Artem Romanyuk, Vladimir Kutuev"
 __copyright__ = "Copyright (c) 2025 PySATL project"
 __license__ = "SPDX-License-Identifier: MIT"
 
-from .algorithms.abstract_algorithm import Algorithm
-from .scrubber.abstract import Scrubber
+from pysatl_cpd.core.algorithms.abstract_algorithm import Algorithm
+from pysatl_cpd.core.scrubber.abstract import Scrubber
 
 
 class CpdCore:

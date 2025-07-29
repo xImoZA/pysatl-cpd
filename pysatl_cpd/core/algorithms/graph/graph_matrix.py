@@ -1,3 +1,11 @@
+"""
+Module implementing graph representation using adjacency matrices for change point detection.
+"""
+
+__author__ = " Temerlan Akhmetov"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
 from typing import Any
 
 import numpy.typing as npt

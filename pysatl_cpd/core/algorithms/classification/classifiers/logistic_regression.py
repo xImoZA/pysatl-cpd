@@ -12,10 +12,10 @@ import numpy as np
 import numpy.typing as npt
 from sklearn.linear_model import LogisticRegression
 
-from pysatl_cpd.core.algorithms.classification.abstracts.iclassifier import Classifier
+from pysatl_cpd.core.algorithms.classification.abstracts import IClassifier
 
 
-class LogisticRegressionClassifier(Classifier):
+class LogisticRegressionClassifier(IClassifier):
     """
     The class implementing classifier based on logistic regression for cpd.
     """

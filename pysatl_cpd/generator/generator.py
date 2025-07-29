@@ -1,3 +1,12 @@
+"""
+Module for generating datasets with specified distributions using different backends (e.g. SciPy).
+"""
+
+__author__ = "Artem Romanyuk"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
+
 from abc import ABC, abstractmethod
 from enum import Enum
 from pathlib import Path

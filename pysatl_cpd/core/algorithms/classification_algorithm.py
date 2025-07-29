@@ -11,13 +11,7 @@ import numpy as np
 import numpy.typing as npt
 
 from pysatl_cpd.core.algorithms.abstract_algorithm import Algorithm
-from pysatl_cpd.core.algorithms.classification.abstracts.iclassifier import Classifier
-from pysatl_cpd.core.algorithms.classification.abstracts.iquality_metric import (
-    QualityMetric,
-)
-from pysatl_cpd.core.algorithms.classification.abstracts.istatistic_test import (
-    TestStatistic,
-)
+from pysatl_cpd.core.algorithms.classification.abstracts import IClassifier, IQualityMetric, ITestStatistic
 
 
 class ClassificationAlgorithm(Algorithm):
@@ -27,9 +21,9 @@ class ClassificationAlgorithm(Algorithm):
 
     def __init__(
         self,
-        classifier: Classifier,
-        quality_metric: QualityMetric,
-        test_statistic: TestStatistic,
+        classifier: IClassifier,
+        quality_metric: IQualityMetric,
+        test_statistic: ITestStatistic,
         indent_coeff: float,
     ) -> None:
         """
@@ -52,11 +46,11 @@ class ClassificationAlgorithm(Algorithm):
         self.__change_points_count = 0
 
     @property
-    def test_statistic(self) -> TestStatistic:
+    def test_statistic(self) -> ITestStatistic:
         return self.__test_statistic
 
     @test_statistic.setter
-    def test_statistic(self, test_statistic: TestStatistic) -> None:
+    def test_statistic(self, test_statistic: ITestStatistic) -> None:
         self.__test_statistic = test_statistic
 
     def detect(self, window: npt.NDArray[np.float64]) -> int:

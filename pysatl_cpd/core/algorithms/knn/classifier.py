@@ -12,7 +12,7 @@ from math import sqrt
 import numpy as np
 import numpy.typing as npt
 
-from .graph import KNNGraph
+from pysatl_cpd.core.algorithms.knn.graph import KNNGraph
 
 
 class KNNClassifier:

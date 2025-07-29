@@ -1,3 +1,10 @@
+"""
+Module contains problem specification for change point detection tasks.
+"""
+
+__author__ = "Vladimir Kutuev, Loikov Vladislav"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
 from dataclasses import dataclass
 
 

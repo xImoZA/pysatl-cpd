@@ -9,7 +9,7 @@ __license__ = "SPDX-License-Identifier: MIT"
 import numpy as np
 import numpy.typing as npt
 
-from pysatl_cpd.core.algorithms.bayesian.abstracts.ilocalizer import ILocalizer
+from pysatl_cpd.core.algorithms.bayesian.abstracts import ILocalizer
 
 
 class ArgmaxLocalizer(ILocalizer):

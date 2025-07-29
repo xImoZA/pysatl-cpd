@@ -3,19 +3,21 @@ Module for prediction model for Bayesian online CPD, which supports heuristic se
 exponential conjugate likelihood based on estimation from learning sample.
 """
 
+__author__ = "Alexey Tatyanenko"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
 from typing import Optional
 
 import numpy as np
 from numpy import typing as npt
 
-from pysatl_cpd.core.algorithms.bayesian.abstracts.ilikelihood import (
+from pysatl_cpd.core.algorithms.bayesian.abstracts import (
     ILikelihood,
     ILikelihoodWithPriorProbability,
 )
-from pysatl_cpd.core.algorithms.bayesian.likelihoods.exponential_conjugate import (
+from pysatl_cpd.core.algorithms.bayesian.likelihoods import (
     ExponentialConjugateWithPriorProbability,
-)
-from pysatl_cpd.core.algorithms.bayesian.likelihoods.gaussian_conjugate import (
     GaussianConjugateWithPriorProbability,
 )
 

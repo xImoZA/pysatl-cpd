@@ -12,9 +12,8 @@ from itertools import islice
 import numpy as np
 import numpy.typing as npt
 
+from pysatl_cpd.core.scrubber.abstract import Scrubber, ScrubberWindow
 from pysatl_cpd.core.scrubber.data_providers import DataProvider
-
-from .abstract import Scrubber, ScrubberWindow
 
 
 class LinearScrubber(Scrubber):

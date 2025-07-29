@@ -1,3 +1,11 @@
+"""
+Module containing adjacency list builder for graph-based change point detection.
+"""
+
+__author__ = "Temerlan Akhmetov "
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
 from collections.abc import Callable
 from typing import Any
 

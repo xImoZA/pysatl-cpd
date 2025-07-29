@@ -1,3 +1,12 @@
+"""
+Module contains graph-based change point detection algorithm implementation.
+"""
+
+__author__ = "Temerlan Akhmetov, Vladimir Kutuev"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
+
 from collections.abc import Callable
 from typing import Any
 

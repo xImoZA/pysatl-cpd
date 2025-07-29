@@ -10,7 +10,7 @@ import heapq
 import typing as tp
 from math import isclose
 
-from .abstracts.observation import Neighbour, Observation
+from .abstracts.iobservation import IObservation, Neighbour
 
 
 class NNHeap:
@@ -21,8 +21,8 @@ class NNHeap:
     def __init__(
         self,
         size: int,
-        metric: tp.Callable[[Observation, Observation], float],
-        main_observation: Observation,
+        metric: tp.Callable[[IObservation, IObservation], float],
+        main_observation: IObservation,
         delta: float,
     ) -> None:
         """
@@ -40,7 +40,7 @@ class NNHeap:
         self.__heap: list[Neighbour] = []
         self.__delta = delta
 
-    def build(self, neighbours: list[Observation]) -> None:
+    def build(self, neighbours: list[IObservation]) -> None:
         """
         Builds a nearest neighbour heap relative to the main observation with the given neighbours.
 
@@ -49,7 +49,7 @@ class NNHeap:
         for neighbour in neighbours:
             self.__add(neighbour)
 
-    def find_in_heap(self, observation: Observation) -> bool:
+    def find_in_heap(self, observation: IObservation) -> bool:
         """
         Checks if the given observation is among the nearest neighbours of the main observation.
 
@@ -66,7 +66,7 @@ class NNHeap:
     def get_neighbours_indices(self) -> list[int]:
         return [n.observation.time for n in self.__heap]
 
-    def __add(self, observation: Observation) -> None:
+    def __add(self, observation: IObservation) -> None:
         """
         Adds observation to heap.
 

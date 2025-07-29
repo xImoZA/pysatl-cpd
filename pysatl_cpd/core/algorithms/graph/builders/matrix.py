@@ -1,3 +1,11 @@
+"""
+Module containing adjacency matrix builder for graph-based change point detection.
+"""
+
+__author__ = " Temerlan Akhmetov, Vladimir Kutuev"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
 from collections.abc import Callable, Iterable
 from typing import Any
 

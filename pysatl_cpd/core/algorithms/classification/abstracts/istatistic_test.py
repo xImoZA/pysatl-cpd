@@ -9,7 +9,7 @@ __license__ = "SPDX-License-Identifier: MIT"
 from abc import ABC, abstractmethod
 
 
-class TestStatistic(ABC):
+class ITestStatistic(ABC):
     """Test statistic's abstract base class."""
 
     @abstractmethod

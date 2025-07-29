@@ -1,3 +1,11 @@
+"""
+Module for describing datasets with sub-samples distributions.
+"""
+
+__author__ = "Artem Romanyuk"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
 from io import StringIO
 from itertools import accumulate
 

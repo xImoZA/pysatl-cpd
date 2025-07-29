@@ -12,10 +12,10 @@ import numpy as np
 import numpy.typing as npt
 from sklearn.ensemble import RandomForestClassifier
 
-from pysatl_cpd.core.algorithms.classification.abstracts.iclassifier import Classifier
+from pysatl_cpd.core.algorithms.classification.abstracts import IClassifier
 
 
-class RFClassifier(Classifier):
+class RFClassifier(IClassifier):
     """
     The class implementing random forest classifier for cpd.
     """

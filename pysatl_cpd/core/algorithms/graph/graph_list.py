@@ -1,3 +1,11 @@
+"""
+Module implementing graph representation using adjacency lists for change point detection.
+"""
+
+__author__ = " Temerlan Akhmetov"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
 from typing import Any, TypeAlias
 
 from pysatl_cpd.core.algorithms.graph.abstracts.igraph import IGraph

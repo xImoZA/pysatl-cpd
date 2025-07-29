@@ -1,3 +1,12 @@
+"""
+Module implementing graph-based change point detection algorithm using statistical methods.
+"""
+
+__author__ = " Temerlan Akhmetov"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
+
 import math
 
 from pysatl_cpd.core.algorithms.graph.abstracts.igraph import IGraph

@@ -1,14 +1,22 @@
+"""
+Module contains RULSIF (Relative Unconstrained Least-Squares Importance Fitting)
+algorithm implementation for change point detection.
+"""
+
+__author__ = "Aleksandra Listkova"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
+
 from typing import cast
 
 import numpy as np
 import numpy.typing as npt
 
-from pysatl_cpd.core.algorithms.density.abstracts.density_based_algorithm import (
-    DensityBasedAlgorithm,
-)
+from pysatl_cpd.core.algorithms.density.abstracts import IDensityBasedAlgorithm
 
 
-class RulsifAlgorithm(DensityBasedAlgorithm):
+class RulsifAlgorithm(IDensityBasedAlgorithm):
     """Relative Unconstrained Least-Squares Importance Fitting (RULSIF)
     algorithm for change point detection.
 

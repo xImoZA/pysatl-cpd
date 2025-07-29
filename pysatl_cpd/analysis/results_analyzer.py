@@ -1,3 +1,12 @@
+"""
+Module contains class for analyzing results of change point detection algorithms, including metrics calculation.
+"""
+
+__author__ = "Vladimir Kutuev"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
+
 class CpdResultsAnalyzer:
     """Class for counting confusion matrix and other metrics on CPD results"""
 

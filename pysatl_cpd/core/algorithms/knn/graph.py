@@ -12,7 +12,7 @@ from collections import deque
 import numpy as np
 import numpy.typing as npt
 
-from .abstracts.observation import Observation
+from .abstracts.iobservation import IObservation
 from .heap import NNHeap
 
 
@@ -43,8 +43,8 @@ class KNNGraph:
         Default is 7, which is generally the most optimal value (based on the experiments results).
         :param delta: delta for comparing float values of the given observations.
         """
-        self.__window: list[Observation] = [Observation(t, v) for t, v in enumerate(window)]
-        self.__metric: tp.Callable[[Observation, Observation], float] = lambda obs1, obs2: metric(
+        self.__window: list[IObservation] = [IObservation(t, v) for t, v in enumerate(window)]
+        self.__metric: tp.Callable[[IObservation, IObservation], float] = lambda obs1, obs2: metric(
             obs1.value, obs2.value
         )
         self.__k = k

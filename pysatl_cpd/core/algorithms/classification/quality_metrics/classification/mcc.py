@@ -11,12 +11,10 @@ from math import sqrt
 import numpy as np
 import numpy.typing as npt
 
-from pysatl_cpd.core.algorithms.classification.abstracts.iquality_metric import (
-    QualityMetric,
-)
+from pysatl_cpd.core.algorithms.classification.abstracts import IQualityMetric
 
 
-class MCC(QualityMetric):
+class MCC(IQualityMetric):
     """
     The class implementing quality metric based on Matthews correlation coefficient.
     """

@@ -1,3 +1,11 @@
+"""
+Module contains protocol for change point detection algorithms' interface.
+"""
+
+__author__ = "Romanyuk Artem, Vladimir Kutuev"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
 from typing import Protocol
 
 import numpy as np

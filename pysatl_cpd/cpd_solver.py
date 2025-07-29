@@ -8,13 +8,11 @@ __license__ = "SPDX-License-Identifier: MIT"
 
 import time
 
-from .core.algorithms.abstract_algorithm import Algorithm
-from .core.cpd_core import CpdCore
-from .core.problem import CpdProblem
-from .core.scrubber.abstract import Scrubber
-from .core.scrubber.data_providers import LabeledDataProvider
-from .icpd_solver import CpdLocalizationResults, ICpdSolver
-from .labeled_data import LabeledCpdData
+from pysatl_cpd.core import CpdCore, CpdProblem
+from pysatl_cpd.core.algorithms import Algorithm
+from pysatl_cpd.core.scrubber import LabeledDataProvider, Scrubber
+from pysatl_cpd.icpd_solver import CpdLocalizationResults, ICpdSolver
+from pysatl_cpd.labeled_data import LabeledCpdData
 
 
 class CpdSolver(ICpdSolver):

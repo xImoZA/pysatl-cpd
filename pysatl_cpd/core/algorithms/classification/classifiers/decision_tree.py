@@ -12,10 +12,10 @@ import numpy as np
 import numpy.typing as npt
 import sklearn.tree as sk
 
-from pysatl_cpd.core.algorithms.classification.abstracts.iclassifier import Classifier
+from pysatl_cpd.core.algorithms.classification.abstracts import IClassifier
 
 
-class DecisionTreeClassifier(Classifier):
+class DecisionTreeClassifier(IClassifier):
     """
     The class implementing decision tree classifier for cpd.
     """

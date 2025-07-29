@@ -12,7 +12,7 @@ import numpy as np
 import numpy.typing as npt
 
 
-class QualityMetric(ABC):
+class IQualityMetric(ABC):
     """Quality metric's abstract base class."""
 
     @abstractmethod

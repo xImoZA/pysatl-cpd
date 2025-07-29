@@ -6,21 +6,15 @@ __author__ = "Alexey Tatyanenko"
 __copyright__ = "Copyright (c) 2024 Alexey Tatyanenko"
 __license__ = "SPDX-License-Identifier: MIT"
 
-
 import numpy as np
 import numpy.typing as npt
 
-from pysatl_cpd.core.algorithms.abstract_algorithm import Algorithm
-from pysatl_cpd.core.algorithms.bayesian.abstracts.idetector import IDetector
-from pysatl_cpd.core.algorithms.bayesian.abstracts.ihazard import IHazard
-from pysatl_cpd.core.algorithms.bayesian.abstracts.ilikelihood import ILikelihood
-from pysatl_cpd.core.algorithms.bayesian.abstracts.ilocalizer import ILocalizer
-from pysatl_cpd.core.algorithms.bayesian.detectors.threshold import ThresholdDetector
-from pysatl_cpd.core.algorithms.bayesian.hazards.constant import ConstantHazard
-from pysatl_cpd.core.algorithms.bayesian.likelihoods.gaussian_conjugate import (
-    GaussianConjugate,
-)
-from pysatl_cpd.core.algorithms.bayesian.localizers.argmax import ArgmaxLocalizer
+from pysatl_cpd.core.algorithms import Algorithm
+from pysatl_cpd.core.algorithms.bayesian.abstracts import IDetector, IHazard, ILikelihood, ILocalizer
+from pysatl_cpd.core.algorithms.bayesian.detectors import ThresholdDetector
+from pysatl_cpd.core.algorithms.bayesian.hazards import ConstantHazard
+from pysatl_cpd.core.algorithms.bayesian.likelihoods import GaussianConjugate
+from pysatl_cpd.core.algorithms.bayesian.localizers import ArgmaxLocalizer
 
 
 class BayesianAlgorithm(Algorithm):
@@ -158,7 +152,6 @@ class BayesianAlgorithm(Algorithm):
         """
         return (
             self.__time < sample_size - 1
-            and not self.__pred_probs_are_zero
             and not self.__pred_probs_are_zero
             and not self.__detector.detect(self.__growth_probs[: self.__gap_size + 1])
         )
