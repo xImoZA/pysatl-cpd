@@ -59,6 +59,24 @@ class ArimaCusumAlgorithm(OnlineAlgorithm):
 
         self.__prev_residual_norm: np.float64 = np.float64(0.0)
 
+    def clear(self) -> None:
+        self.__arima_model.clear()
+
+        self.__training_buffer = []
+        self.__is_training = True
+        self.__sigma2 = None
+
+        self.__current_time = 0
+        self.__data_history = []
+        self.__was_change_point = False
+        self.__change_point = None
+
+        for _, detector in self.__cusum_detectors.items():
+            detector.clear()
+
+        for residual_moment_baseline in self.__residual_moment_baselines:
+            self.__residual_moment_baselines[residual_moment_baseline] = np.float64(0.0)
+
     def __fit_model(self) -> None:
         """
         Fits the ARIMA model on the collected buffer and calibrates CUSUM detectors.
