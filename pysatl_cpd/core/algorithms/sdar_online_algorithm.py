@@ -37,6 +37,17 @@ class SDARAlgorithm(OnlineAlgorithm):
         self.__was_change_point: bool = False
         self.__change_point: Optional[int] = None
 
+    def clear(self) -> None:
+        self.__first_model.clear()
+        self.__second_model.clear()
+
+        self.__first_scores = []
+        self.__second_scores = []
+
+        self.__current_time = 0
+        self.__was_change_point = False
+        self.__change_point = None
+
     def __process_point(self, observation: npt.NDArray[np.float64]) -> None:
         """
         Processes a single observation, updating both models and checking for a change point.
