@@ -18,6 +18,7 @@ class ArimaModel:
         """
         self.__training_data: list[np.float64] = []
         self.__results: Optional[ARIMAResults] = None
+        self.__order: Optional[tuple[int, int, int]] = None
 
     def clear(self) -> None:
         """
@@ -26,8 +27,9 @@ class ArimaModel:
         """
         self.__training_data = []
         self.__results = None
+        self.__order = None
 
-    def fit(self, training_data: list[np.float64]) -> Any:
+    def fit(self, training_data: list[np.float64], order: Optional[tuple[int, int, int]] = None) -> Any:
         """
         Fits the ARIMA model on the provided training data.
 
@@ -36,13 +38,19 @@ class ArimaModel:
         Convergence warnings are suppressed to avoid cluttering output.
 
         :param training_data: the time series data to train the model on.
+        :param order: the (p,d,q) order of the model for the autoregressive, differences, and moving average components.
         :return: the residuals of the model after fitting.
         """
         self.__training_data = training_data
+        if order:
+            self.__order = order
+
+        assert self.__order is not None, "Model order was not specified."
 
         with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=UserWarning, message=".*Non-(stationary|invertible) starting.*")
             warnings.filterwarnings("ignore", category=ConvergenceWarning)
-            model = ARIMA(self.__training_data, order=(0, 0, 0))
+            model = ARIMA(self.__training_data, order=self.__order)
             self.__results = model.fit()
 
         return self.__results.resid

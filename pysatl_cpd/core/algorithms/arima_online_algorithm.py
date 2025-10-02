@@ -19,14 +19,21 @@ class ArimaCusumAlgorithm(OnlineAlgorithm):
         training_size: int,
         h_coefficient: float = 5.0,
         ema_alpha: float = 0.05,
+        p: int = 0,
+        d: int = 0,
+        q: int = 0,
     ):
         """
         Initializes the ArimaCusumAlgorithm.
         :param training_size: the number of data points for initial training.
         :param h_coefficient: a multiplier for the statistic's standard deviation to set the CUSUM 'h' threshold.
         :param ema_alpha: the smoothing factor for the exponential moving average (EMA) of the residual variance.
+        :param p: the order of the model for the autoregressive.
+        :param d: the order of the model for the differences.
+        :param q: the order of the model for the moving average components.
         """
         self.__arima_model: ArimaModel = ArimaModel()
+        self.__order: Optional[tuple[int, int, int]] = (p, d, q)
 
         self.__training_buffer: list[np.float64] = []
         self.__training_size = training_size
@@ -47,20 +54,19 @@ class ArimaCusumAlgorithm(OnlineAlgorithm):
             "variance": CuSum(),
             "skewness": CuSum(),
             "kurtosis": CuSum(),
-            "autocorrelation": CuSum(),
         }
         self.__residual_moment_baselines: dict[str, np.float64] = {
             "mean": np.float64(0.0),
             "variance": np.float64(0.0),
             "skewness": np.float64(0.0),
             "kurtosis": np.float64(0.0),
-            "autocorrelation": np.float64(0.0),
         }
 
         self.__prev_residual_norm: np.float64 = np.float64(0.0)
 
     def clear(self) -> None:
         self.__arima_model.clear()
+        self.__order = None
 
         self.__training_buffer = []
         self.__is_training = True
@@ -85,7 +91,7 @@ class ArimaCusumAlgorithm(OnlineAlgorithm):
         assert len(self.__training_buffer) >= self.__training_size, (
             "Training buffer is smaller than required training size."
         )
-        residuals = self.__arima_model.fit(self.__training_buffer)
+        residuals = self.__arima_model.fit(self.__training_buffer, self.__order)
         assert residuals is not None and len(residuals) != 0, "ARIMA fit did not produce valid residuals."
 
         self.__sigma2 = np.maximum(np.var(residuals), 1e-6)
@@ -122,8 +128,6 @@ class ArimaCusumAlgorithm(OnlineAlgorithm):
             "variance": ((normalized_residual**2) - 1) - self.__residual_moment_baselines["variance"],
             "skewness": (normalized_residual**3) - self.__residual_moment_baselines["skewness"],
             "kurtosis": ((normalized_residual**4) - 3) - self.__residual_moment_baselines["kurtosis"],
-            "autocorrelation": (normalized_residual * self.__prev_residual_norm)
-            - self.__residual_moment_baselines["autocorrelation"],
         }
         self.__prev_residual_norm = normalized_residual
 
@@ -155,7 +159,6 @@ class ArimaCusumAlgorithm(OnlineAlgorithm):
             "variance": (normalized_residuals**2) - 1,
             "skewness": normalized_residuals**3,
             "kurtosis": (normalized_residuals**4) - 3,
-            "autocorrelation": normalized_residuals[1:] * normalized_residuals[:-1],
         }
 
         # Update moment baselines
@@ -234,7 +237,6 @@ class ArimaCusumAlgorithm(OnlineAlgorithm):
             "variance": np.float64(0.0),
             "skewness": np.float64(0.0),
             "kurtosis": np.float64(0.0),
-            "autocorrelation": np.float64(0.0),
         }
         self.__prev_residual_norm = np.float64(0.0)
         self.__sigma2 = None
