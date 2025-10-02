@@ -13,7 +13,7 @@ def set_seed():
 @pytest.fixture
 def algorithm_factory():
     def _factory():
-        return ArimaCusumAlgorithm(training_size=5, h_coefficient=5, ema_alpha=0.05)
+        return ArimaCusumAlgorithm(training_size=5, h_coefficient=5, ema_alpha=0.05, p=0, d=0, q=0)
 
     return _factory
 
@@ -39,7 +39,7 @@ def generate_data(data_params):
     return np.concatenate([left_distr.scipy_sample(cp), right_distr.scipy_sample(size - cp)])
 
 
-class TestSDARAlgorithm:
+class TestArimaCusumAlgorithm:
     @pytest.fixture(autouse=True)
     def setup(self, algorithm_factory):
         self.algorithm_factory = algorithm_factory

@@ -66,7 +66,6 @@ class ArimaCusumAlgorithm(OnlineAlgorithm):
 
     def clear(self) -> None:
         self.__arima_model.clear()
-        self.__order = None
 
         self.__training_buffer = []
         self.__is_training = True

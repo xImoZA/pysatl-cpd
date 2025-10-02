@@ -27,7 +27,6 @@ class ArimaModel:
         """
         self.__training_data = []
         self.__results = None
-        self.__order = None
 
     def fit(self, training_data: list[np.float64], order: Optional[tuple[int, int, int]] = None) -> Any:
         """
