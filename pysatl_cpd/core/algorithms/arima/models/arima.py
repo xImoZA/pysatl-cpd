@@ -1,3 +1,12 @@
+"""
+Module for the implementation of an ARIMA prediction model for the Predict&Compare CPD algorithm.
+"""
+
+__author__ = "Aleksandra Ri"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
+
 import warnings
 from typing import Any, Optional
 

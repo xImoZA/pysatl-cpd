@@ -1,3 +1,12 @@
+"""
+Module for implementation of the CUSUM statistical test for Predict&Compare CPD algorithm.
+"""
+
+__author__ = "Aleksandra Ri"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
+
 import numpy as np
 
 ZERO = np.float64(0.0)

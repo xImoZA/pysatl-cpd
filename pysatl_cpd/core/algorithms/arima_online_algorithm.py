@@ -1,10 +1,19 @@
+"""
+Module for implementation of Predict&Compare CPD algorithm.
+"""
+
+__author__ = "Aleksandra Ri"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
+
 from typing import Optional
 
 import numpy as np
 import numpy.typing as npt
 
 from pysatl_cpd.core.algorithms.arima.models.arima import ArimaModel
-from pysatl_cpd.core.algorithms.arima.static_tests.cusum import CuSum
+from pysatl_cpd.core.algorithms.arima.stats_tests.cusum import CuSum
 from pysatl_cpd.core.algorithms.online_algorithm import OnlineAlgorithm
 
 
@@ -220,7 +229,7 @@ class ArimaCusumAlgorithm(OnlineAlgorithm):
         self.__was_change_point = True
 
         # Localize the change point based on detector priority
-        priority = ["mean", "variance", "skewness", "kurtosis", "autocorrelation"]
+        priority = ["mean", "variance", "skewness", "kurtosis"]
         for stat_name in priority:
             if detections.get(stat_name):
                 self.__change_point = self.__current_time - self.__cusum_detectors[stat_name].get_last_reset_index()
