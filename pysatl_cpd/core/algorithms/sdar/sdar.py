@@ -1,3 +1,12 @@
+"""
+Module for the implementation of an SDAR prediction model for the SDAR CPD algorithm.
+"""
+
+__author__ = "Aleksandra Ri"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
+
 from collections import deque
 from typing import Any, Optional
 
@@ -7,7 +16,7 @@ import numpy.typing as npt
 
 class SDARmodel:
     """
-    Implements a Seasonal Vector Autoregressive (SDAR) model for online calculation
+    Implements a Sequentially Discounting Auto-Regressive (SDAR) model for online calculation
     of anomaly scores in time series.
     """
 
@@ -20,7 +29,6 @@ class SDARmodel:
                                 Values close to 1 imply slow forgetting.
         :param smoothing_window_size: The size of the window for averaging (smoothing) the anomaly scores.
                                 Must be a positive integer.
-        :return:
         """
         assert order > 0, "Order must be a positive integer."
         assert 0 < forgetting_factor < 1, "Forgetting factor must be between 0 and 1."
@@ -43,7 +51,6 @@ class SDARmodel:
         """
         Initializes the model's internal state based on the first observation.
         :param x: the first observation.
-        :return:
         """
         self.__dimension = x.shape[0]
         self.__mu = np.zeros(self.__dimension)
@@ -57,7 +64,6 @@ class SDARmodel:
     def clear(self) -> None:
         """
         Resets the internal state of the model to its initial values.
-        :return:
         """
         if self.__dimension is None:
             return
@@ -86,11 +92,10 @@ class SDARmodel:
         error = x - x_hat
         return error
 
-    def __update__matrices(self, x: npt.NDArray[np.float64]) -> None:
+    def __update_matrices(self, x: npt.NDArray[np.float64]) -> None:
         """
         Recursively updates the covariance matrices using the forgetting factor.
         :param x: a new observation.
-        :return:
         """
         assert self.__mu is not None, "Model must be initialized before update matrices."
 
@@ -108,7 +113,6 @@ class SDARmodel:
         """
         Performs a single model update step based on a new observation.
         :param x: a new observation.
-        :return:
         """
         if self.__dimension is None:
             self.__initialize_state(x)
@@ -121,7 +125,7 @@ class SDARmodel:
 
         self.__mu = self.__lambda * self.__mu + (1 - self.__lambda) * x
 
-        self.__update__matrices(x)
+        self.__update_matrices(x)
         self.__solve_equations()
 
         error = self.__calculate_error(x)
@@ -154,7 +158,6 @@ class SDARmodel:
         """
         Finds the AR model coefficients by solving the equations for the multivariate case.
         Handles potential singularity of the matrix.
-        :return:
         """
         assert self.__dimension is not None, "Model must be initialized before solve equations."
 

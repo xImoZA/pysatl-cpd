@@ -1,3 +1,12 @@
+"""
+Module for implementation of two-level SDAR CPD algorithm.
+"""
+
+__author__ = "Aleksandra Ri"
+__copyright__ = "Copyright (c) 2025 PySATL project"
+__license__ = "SPDX-License-Identifier: MIT"
+
+
 from typing import Optional
 
 import numpy as np
@@ -21,7 +30,6 @@ class SDARAlgorithm(OnlineAlgorithm):
         :param smoothing_window_size: the smoothing window size for both SDAR models.
         :param forgetting_factor: the forgetting factor (lambda) for both SDAR models.
         :param threshold: the threshold for the second-level anomaly score, above which a change point is detected.
-        :return:
         """
         assert threshold >= 0, "Threshold must be non-negative."
 
