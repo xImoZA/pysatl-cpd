@@ -1,0 +1,3 @@
+configuration,training_size,optimal_threshold,ema_alpha,p,d,q,target_significance,final_significance
+normal,50,19.40625,0.05,0,0,0,0.05,0.0536
+normal,50,17.625,0.05,0,1,0,0.05,0.0528
